@@ -1,0 +1,1 @@
+# vitaswap-plugin
