@@ -176,6 +176,13 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	public $vitalswap_base_url;
 
 	/**
+	 * Script url
+	 *
+	 * @var string
+	 */
+	public $vitalswap_script_base_url;
+
+	/**
 	 * Gateway disabled message
 	 *
 	 * @var string
@@ -257,6 +264,10 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		$this->public_key = $this->testmode ? $this->test_public_key : $this->live_public_key;
 		$this->secret_key = $this->testmode ? $this->test_secret_key : $this->live_secret_key;
 		$this->vitalswap_base_url = $this->testmode ? 'https://vitalswap.com/test/api_v2/' : 'https://vitalswap.com/api_v2/';
+
+		$this->vitalswap_script_base_url = $this->testmode ? 'https://wp-test.vitalswap.com/' : 'https://wp.vitalswap.com/';
+
+
 		// Hooks
 		add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
 
@@ -602,28 +613,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		?>
 		<script src="https://scripts.vitalswap.com/checkout.js" crossorigin="anonymous"></script>
 
-		<!-- <script> 
-		vitalswapCheckout.init({
-				session: 'abcsggh',
-				isOtp: false, 
-				email: 'kenny@ksolutionsng.com', 
-				// callback: "https://yourcheckoutpage.com", //Optional URL to redirect after completion
-				environment: "sandbox", // Set to "sandbox" or "production"
-				onload: () => {
-					console.log("Checkout started");
-				},
-				onsuccess: (data) => {
-					console.log("Checkout successful:", data);
-				},
-				onclose: (data) => {
-					console.log("Checkout closed:", data);
-				},
-				onerror: (error) => {
-					console.error("Checkout error:", error);
-				},
-			});
-	
-	</script> -->
+
 <?php
 	}
 
@@ -980,7 +970,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 			return array(
 				'result'   => 'success',
-				'redirect' => "https://wp-plugin.webhostingng.org/vitalswapcheckout.php?sId=$VitalSwap_response->session_id&isOTP=$VitalSwap_response->isOTP&email=$customer_email&returnUrl=$return_url",
+				'redirect' => $this->vitalswap_script_base_url . "vitalswap-checkout.php?sId=$VitalSwap_response->session_id&isOTP=$VitalSwap_response->isOTP&email=$customer_email&returnUrl=$return_url",
 
 			);
 		} else {
