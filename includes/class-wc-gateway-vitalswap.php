@@ -201,9 +201,9 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	 */
 	public function __construct()
 	{
-		$this->id                 = 'woo-vitalswap';
-		$this->method_title       = __('VitalSwap', 'woo-vitalswap');
-		$this->method_description = __('VitalSwap for Business allows you receive payments from Africa directly in your local currency.');
+		$this->id                 = 'vitalswap';
+		$this->method_title       = __('VitalSwap', 'vitalswap');
+		$this->method_description = __('VitalSwap for Business allows you receive payments from Africa directly in your local currency.', 'vitalswap');
 		$this->has_fields         = true;
 
 		$this->payment_page = $this->get_option('payment_page');
@@ -282,7 +282,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 				'process_admin_options',
 			)
 		);
-		add_action('wp_head', array($this, 'load_vitalswap_sdk'));
+		// add_action('wp_head', array($this, 'load_vitalswap_sdk'));
 
 		add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
 
@@ -292,7 +292,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		// Webhook listener/API hook.
 		add_action('woocommerce_api_tbz_wc_VitalSwap_webhook', array($this, 'process_webhooks'));
 
-		add_action('vitalswap_checkout_script',  array($this, 'init_vitalswap'), 11, 3);
+		// add_action('vitalswap_checkout_script',  array($this, 'init_vitalswap'), 11, 3);
 
 
 
@@ -308,9 +308,10 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	public function is_valid_for_use()
 	{
 
-		if (!in_array(get_woocommerce_currency(), apply_filters('woocommerce_VitalSwap_supported_currencies', array('NGN', 'USD', 'ZAR', 'GHS', 'KES', 'XOF', 'EGP', 'RWF')))) {
+		if (!in_array(get_woocommerce_currency(), apply_filters('woocommerce_VitalSwap_supported_currencies', array('NGN', 'USD')))) {
 
-			$this->msg = sprintf(__('VitalSwap does not support your store currency. Kindly set it to either NGN (&#8358), GHS (&#x20b5;), USD (&#36;), KES (KSh), RWF (R₣), ZAR (R), XOF (CFA), or EGP (E£) <a href="%s">here</a>', 'woo-vitalswap'), admin_url('admin.php?page=wc-settings&tab=general'));
+			/* translators: Vitalswap supported currencies */
+			$this->msg = sprintf(__('VitalSwap does not support your store currency. Kindly set it to either NGN (&#8358) or USD (&#36;) <a href="%s">here</a>', 'vitalswap'), admin_url('admin.php?page=wc-settings&tab=general'));
 
 			return false;
 		}
@@ -353,7 +354,8 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 		// Check required fields.
 		if (!($this->public_key && $this->secret_key)) {
-			echo '<div class="error"><p>' . sprintf(__('Please enter your VitalSwap merchant details <a href="%s">here</a> to be able to use the VitalSwap WooCommerce plugin.', 'woo-vitalswap'), admin_url('admin.php?page=wc-settings&tab=checkout&section=VitalSwap')) . '</p></div>';
+			/* translators: Vitalswap key */
+			echo esc_html('<div class="error"><p>' . sprintf(__('Please enter your VitalSwap merchant details <a href="%s">here</a> to be able to use the VitalSwap plugin.', 'vitalswap'), admin_url('admin.php?page=wc-settings&tab=checkout&section=VitalSwap')) . '</p></div>');
 			return;
 		}
 	}
@@ -387,18 +389,16 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 ?>
 
-		<h2><?php _e('VitalSwap', 'woo-vitalswap'); ?>
+		<h2><?php esc_html_e('VitalSwap', 'vitalswap'); ?>
 			<?php
 			if (function_exists('wc_back_link')) {
-				wc_back_link(__('Return to payments', 'woo-vitalswap'), admin_url('admin.php?page=wc-settings&tab=checkout'));
+				wc_back_link(__('Return to payments', 'vitalswap'), admin_url('admin.php?page=wc-settings&tab=checkout'));
 			}
 			?>
 		</h2>
 
-		<h4>
-			<strong><?php printf(__('Optional: To avoid situations where bad network makes it impossible to verify transactions, set your webhook URL <a href="%1$s" target="_blank" rel="noopener noreferrer">here</a> to the URL below<span style="color: red"><pre><code>%2$s</code></pre></span>', 'woo-vitalswap'), 'https://dashboard.VitalSwap.co/#/settings/developer', WC()->api_request_url('VitalSwap_Webhook')); ?></strong>
-		</h4>
 
+		
 		<?php
 
 		if ($this->is_valid_for_use()) {
@@ -409,7 +409,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		} else {
 		?>
 			<div class="inline error">
-				<p><strong><?php _e('VitalSwap Payment Gateway Disabled', 'woo-vitalswap'); ?></strong>: <?php echo $this->msg; ?></p>
+				<p><strong><?php esc_html_e('VitalSwap Payment Gateway Disabled', 'vitalswap'); ?></strong></p>
 			</div>
 
 		<?php
@@ -424,157 +424,157 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 		$form_fields = array(
 			'enabled'                          => array(
-				'title'       => __('Enable/Disable', 'woo-vitalswap'),
-				'label'       => __('Enable VitalSwap', 'woo-vitalswap'),
+				'title'       => __('Enable/Disable', 'vitalswap'),
+				'label'       => __('Enable VitalSwap', 'vitalswap'),
 				'type'        => 'checkbox',
-				'description' => __('Enable VitalSwap as a payment option on the checkout page.', 'woo-vitalswap'),
+				'description' => __('Enable VitalSwap as a payment option on the checkout page.', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'title'                            => array(
-				'title'       => __('Title', 'woo-vitalswap'),
+				'title'       => __('Title', 'vitalswap'),
 				'type'        => 'text',
-				'description' => __('This controls the payment method title which the user sees during checkout.', 'woo-vitalswap'),
-				'default'     => __('Vitalswap Wallet', 'woo-vitalswap'),
+				'description' => __('This controls the payment method title which the user sees during checkout.', 'vitalswap'),
+				'default'     => __('Vitalswap Wallet', 'vitalswap'),
 				'desc_tip'    => true,
 			),
 			'description'                      => array(
-				'title'       => __('Description', 'woo-vitalswap'),
+				'title'       => __('Description', 'vitalswap'),
 				'type'        => 'textarea',
-				'description' => __('This controls the payment method description which the user sees during checkout.', 'woo-vitalswap'),
-				'default'     => __('Make payment using your vitalswap wallet', 'woo-vitalswap'),
+				'description' => __('This controls the payment method description which the user sees during checkout.', 'vitalswap'),
+				'default'     => __('Make payment using your vitalswap wallet', 'vitalswap'),
 				'desc_tip'    => true,
 			),
 			'testmode'                         => array(
-				'title'       => __('Test mode', 'woo-vitalswap'),
-				'label'       => __('Enable Test Mode', 'woo-vitalswap'),
+				'title'       => __('Test mode', 'vitalswap'),
+				'label'       => __('Enable Test Mode', 'vitalswap'),
 				'type'        => 'checkbox',
-				'description' => __('Test mode enables you to test payments before going live. <br />Once the LIVE MODE is enabled on your VitalSwap account uncheck this.', 'woo-vitalswap'),
+				'description' => __('Test mode enables you to test payments before going live. <br />Once the LIVE MODE is enabled on your VitalSwap account uncheck this.', 'vitalswap'),
 				'default'     => 'yes',
 				'desc_tip'    => true,
 			),
 			'payment_page'                     => array(
-				'title'       => __('Payment Option', 'woo-vitalswap'),
+				'title'       => __('Payment Option', 'vitalswap'),
 				'type'        => 'select',
-				'description' => __('Popup shows the payment popup on the page while Redirect will redirect the customer to VitalSwap to make payment.', 'woo-vitalswap'),
+				'description' => __('Popup shows the payment popup on the page while Redirect will redirect the customer to VitalSwap to make payment.', 'vitalswap'),
 				'default'     => '',
 				'desc_tip'    => false,
 				'options'     => array(
-					''          => __('Select One', 'woo-vitalswap'),
-					'inline'    => __('Popup', 'woo-vitalswap'),
-					'redirect'  => __('Redirect', 'woo-vitalswap'),
+					''          => __('Select One', 'vitalswap'),
+					'inline'    => __('Popup', 'vitalswap'),
+					'redirect'  => __('Redirect', 'vitalswap'),
 				),
 			),
 			'test_secret_key'                  => array(
-				'title'       => __('Test Secret Key', 'woo-vitalswap'),
+				'title'       => __('Test Secret Key', 'vitalswap'),
 				'type'        => 'password',
-				'description' => __('Enter your Test Secret Key here', 'woo-vitalswap'),
+				'description' => __('Enter your Test Secret Key here', 'vitalswap'),
 				'default'     => '',
 			),
 			'test_public_key'                  => array(
-				'title'       => __('Test Public Key', 'woo-vitalswap'),
+				'title'       => __('Test Public Key', 'vitalswap'),
 				'type'        => 'text',
-				'description' => __('Enter your Test Public Key here.', 'woo-vitalswap'),
+				'description' => __('Enter your Test Public Key here.', 'vitalswap'),
 				'default'     => '',
 			),
 			'live_secret_key'                  => array(
-				'title'       => __('Live Secret Key', 'woo-vitalswap'),
+				'title'       => __('Live Secret Key', 'vitalswap'),
 				'type'        => 'password',
-				'description' => __('Enter your Live Secret Key here.', 'woo-vitalswap'),
+				'description' => __('Enter your Live Secret Key here.', 'vitalswap'),
 				'default'     => '',
 			),
 			'live_public_key'                  => array(
-				'title'       => __('Live Public Key', 'woo-vitalswap'),
+				'title'       => __('Live Public Key', 'vitalswap'),
 				'type'        => 'text',
-				'description' => __('Enter your Live Public Key here.', 'woo-vitalswap'),
+				'description' => __('Enter your Live Public Key here.', 'vitalswap'),
 				'default'     => '',
 			),
 			'autocomplete_order'               => array(
-				'title'       => __('Autocomplete Order After Payment', 'woo-vitalswap'),
-				'label'       => __('Autocomplete Order', 'woo-vitalswap'),
+				'title'       => __('Autocomplete Order After Payment', 'vitalswap'),
+				'label'       => __('Autocomplete Order', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-autocomplete-order',
-				'description' => __('If enabled, the order will be marked as complete after successful payment', 'woo-vitalswap'),
+				'description' => __('If enabled, the order will be marked as complete after successful payment', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'remove_cancel_order_button'       => array(
-				'title'       => __('Remove Cancel Order & Restore Cart Button', 'woo-vitalswap'),
-				'label'       => __('Remove the cancel order & restore cart button on the pay for order page', 'woo-vitalswap'),
+				'title'       => __('Remove Cancel Order & Restore Cart Button', 'vitalswap'),
+				'label'       => __('Remove the cancel order & restore cart button on the pay for order page', 'vitalswap'),
 				'type'        => 'checkbox',
 				'description' => '',
 				'default'     => 'no',
 			),
 
 			'custom_metadata'                  => array(
-				'title'       => __('Custom Metadata', 'woo-vitalswap'),
-				'label'       => __('Enable Custom Metadata', 'woo-vitalswap'),
+				'title'       => __('Custom Metadata', 'vitalswap'),
+				'label'       => __('Enable Custom Metadata', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-metadata',
-				'description' => __('If enabled, you will be able to send more information about the order to VitalSwap.', 'woo-vitalswap'),
+				'description' => __('If enabled, you will be able to send more information about the order to VitalSwap.', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_order_id'                    => array(
-				'title'       => __('Order ID', 'woo-vitalswap'),
-				'label'       => __('Send Order ID', 'woo-vitalswap'),
+				'title'       => __('Order ID', 'vitalswap'),
+				'label'       => __('Send Order ID', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-meta-order-id',
-				'description' => __('If checked, the Order ID will be sent to VitalSwap', 'woo-vitalswap'),
+				'description' => __('If checked, the Order ID will be sent to VitalSwap', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_name'                        => array(
-				'title'       => __('Customer Name', 'woo-vitalswap'),
-				'label'       => __('Send Customer Name', 'woo-vitalswap'),
+				'title'       => __('Customer Name', 'vitalswap'),
+				'label'       => __('Send Customer Name', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-meta-name',
-				'description' => __('If checked, the customer full name will be sent to VitalSwap', 'woo-vitalswap'),
+				'description' => __('If checked, the customer full name will be sent to VitalSwap', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_email'                       => array(
-				'title'       => __('Customer Email', 'woo-vitalswap'),
-				'label'       => __('Send Customer Email', 'woo-vitalswap'),
+				'title'       => __('Customer Email', 'vitalswap'),
+				'label'       => __('Send Customer Email', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-meta-email',
-				'description' => __('If checked, the customer email address will be sent to VitalSwap', 'woo-vitalswap'),
+				'description' => __('If checked, the customer email address will be sent to VitalSwap', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_phone'                       => array(
-				'title'       => __('Customer Phone', 'woo-vitalswap'),
-				'label'       => __('Send Customer Phone', 'woo-vitalswap'),
+				'title'       => __('Customer Phone', 'vitalswap'),
+				'label'       => __('Send Customer Phone', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-meta-phone',
-				'description' => __('If checked, the customer phone will be sent to VitalSwap', 'woo-vitalswap'),
+				'description' => __('If checked, the customer phone will be sent to VitalSwap', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_billing_address'             => array(
-				'title'       => __('Order Billing Address', 'woo-vitalswap'),
-				'label'       => __('Send Order Billing Address', 'woo-vitalswap'),
+				'title'       => __('Order Billing Address', 'vitalswap'),
+				'label'       => __('Send Order Billing Address', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-meta-billing-address',
-				'description' => __('If checked, the order billing address will be sent to VitalSwap', 'woo-vitalswap'),
+				'description' => __('If checked, the order billing address will be sent to VitalSwap', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_shipping_address'            => array(
-				'title'       => __('Order Shipping Address', 'woo-vitalswap'),
-				'label'       => __('Send Order Shipping Address', 'woo-vitalswap'),
+				'title'       => __('Order Shipping Address', 'vitalswap'),
+				'label'       => __('Send Order Shipping Address', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-meta-shipping-address',
-				'description' => __('If checked, the order shipping address will be sent to VitalSwap', 'woo-vitalswap'),
+				'description' => __('If checked, the order shipping address will be sent to VitalSwap', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_products'                    => array(
-				'title'       => __('Product(s) Purchased', 'woo-vitalswap'),
-				'label'       => __('Send Product(s) Purchased', 'woo-vitalswap'),
+				'title'       => __('Product(s) Purchased', 'vitalswap'),
+				'label'       => __('Send Product(s) Purchased', 'vitalswap'),
 				'type'        => 'checkbox',
 				'class'       => 'wc-VitalSwap-meta-products',
-				'description' => __('If checked, the product(s) purchased will be sent to VitalSwap', 'woo-vitalswap'),
+				'description' => __('If checked, the product(s) purchased will be sent to VitalSwap', 'vitalswap'),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
@@ -594,7 +594,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	{
 
 		if ($this->description) {
-			echo wpautop(wptexturize($this->description));
+			echo esc_html(wpautop(wptexturize($this->description)));
 		}
 
 		if (!is_ssl()) {
@@ -608,14 +608,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		}
 	}
 
-	public function load_vitalswap_sdk()
-	{
-		?>
-		<script src="https://scripts.vitalswap.com/checkout.js" crossorigin="anonymous"></script>
-
-
-<?php
-	}
+	
 
 
 	/**
@@ -860,26 +853,26 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		);
 	}
 
-	public function init_vitalswap($session_id, $isOTP, $email)
-	{
+	// public function init_vitalswap($session_id, $isOTP, $email)
+	// {
 
 
 
-		// Register our script
-		wp_register_script('checkout-script', plugins_url('assets/js/vitalswap-checkout.js'), [], false, true);
+	// 	// Register our script
+	// 	wp_register_script('checkout-script', plugins_url('assets/js/vitalswap-checkout.js'), [], false, true);
 
-		$checkoutData = [
-			'sessionId'       => $session_id,
-			'isOTP'         => $isOTP,
-			'email' => $email,
-		];
+	// 	$checkoutData = [
+	// 		'sessionId'       => $session_id,
+	// 		'isOTP'         => $isOTP,
+	// 		'email' => $email,
+	// 	];
 
-		// Localise the data, specifying our registered script and a global variable name to be used in the script tag
-		wp_localize_script('checkout-script', 'checkoutData', $checkoutData);
+	// 	// Localise the data, specifying our registered script and a global variable name to be used in the script tag
+	// 	wp_localize_script('checkout-script', 'checkoutData', $checkoutData);
 
-		// Enqueue our script (this can be done before or after localisation)
-		wp_enqueue_script('checkout-script');
-	}
+	// 	// Enqueue our script (this can be done before or after localisation)
+	// 	wp_enqueue_script('checkout-script');
+	// }
 
 	/**
 	 * Process a redirect payment option payment.
@@ -978,7 +971,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 			print_r($request);
 			echo '</pre>';
 
-			wc_add_notice(__('Unable to process payment try again', 'woo-vitalswap'), 'error');
+			wc_add_notice(__('Unable to process payment try again', 'vitalswap'), 'error');
 
 			return;
 		}
@@ -1086,14 +1079,16 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 						$order->add_meta_data('_transaction_id', $VitalSwap_ref, true);
 
-						$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment transaction was successful, but the amount paid is not the same as the total order amount.%2$sYour order is currently on hold.%3$sKindly contact us for more information regarding your order and payment status.', 'woo-vitalswap'), '<br />', '<br />', '<br />');
+						/* translators: 1: Number 1, 2: Number 2 */
+						$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment transaction was successful, but the amount paid is not the same as the total order amount.%2$sYour order is currently on hold.%3$sKindly contact us for more information regarding your order and payment status.', 'vitalswap'), '<br />', '<br />', '<br />');
 						$notice_type = 'notice';
 
 						// Add Customer Order Note
 						$order->add_order_note($notice, 1);
 
 						// Add Admin Order Note
-						$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Amount paid is less than the total order amount.%3$sAmount Paid was <strong>%4$s (%5$s)</strong> while the total order amount is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'woo-vitalswap'), '<br />', '<br />', '<br />', $currency_symbol, $amount_paid, $currency_symbol, $order_total, '<br />', $VitalSwap_ref);
+						/* translators: 1: currency Symbol, 2: Amount paid, 3: currency Symbol, 4: order total, 5: payment reference */
+						$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Amount paid is less than the total order amount.%3$sAmount Paid was <strong>%4$s (%5$s)</strong> while the total order amount is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'vitalswap'), '<br />', '<br />', '<br />', $currency_symbol, $amount_paid, $currency_symbol, $order_total, '<br />', $VitalSwap_ref);
 						$order->add_order_note($admin_order_note);
 
 						wc_add_notice($notice, $notice_type);
@@ -1105,14 +1100,16 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 							$order->update_meta_data('_transaction_id', $VitalSwap_ref);
 
-							$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment was successful, but the payment currency is different from the order currency.%2$sYour order is currently on-hold.%3$sKindly contact us for more information regarding your order and payment status.', 'woo-vitalswap'), '<br />', '<br />', '<br />');
+							/* translators: 1: Number 1, 2: Number 2,3: Number 3 */
+							$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment was successful, but the payment currency is different from the order currency.%2$sYour order is currently on-hold.%3$sKindly contact us for more information regarding your order and payment status.', 'vitalswap'), '<br />', '<br />', '<br />');
 							$notice_type = 'notice';
 
 							// Add Customer Order Note
 							$order->add_order_note($notice, 1);
 
 							// Add Admin Order Note
-							$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Order currency is different from the payment currency.%3$sOrder Currency is <strong>%4$s (%5$s)</strong> while the payment currency is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'woo-vitalswap'), '<br />', '<br />', '<br />', $order_currency, $currency_symbol, $payment_currency, $gateway_symbol, '<br />', $VitalSwap_ref);
+							/* translators: 1: currency Symbol, 2: Amount paid, 3: currency Symbol, 4: order total, 5: payment reference */
+							$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Order currency is different from the payment currency.%3$sOrder Currency is <strong>%4$s (%5$s)</strong> while the payment currency is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'vitalswap'), '<br />', '<br />', '<br />', $order_currency, $currency_symbol, $payment_currency, $gateway_symbol, '<br />', $VitalSwap_ref);
 							$order->add_order_note($admin_order_note);
 
 							function_exists('wc_reduce_stock_levels') ? wc_reduce_stock_levels($order_id) : $order->reduce_order_stock();
@@ -1122,6 +1119,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 							$order->payment_complete($VitalSwap_ref);
 
+							/* translators: Vitalswap reference */
 							$order->add_order_note(sprintf('Payment via VitalSwap successful (Transaction Reference: %s)', $VitalSwap_ref));
 
 							if ($this->is_autocomplete_order_enabled($order)) {
@@ -1139,13 +1137,15 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 					return true;
 				} else {
 
-					$order_notice  = __('Payment was declined by VitalSwap.', 'woo-vitalswap');
-					$failed_notice = __('Payment failed using the saved card. Kindly use another payment option.', 'woo-vitalswap');
+					$order_notice  = __('Payment was declined by VitalSwap.', 'vitalswap');
+					$failed_notice = __('Payment failed using the saved card. Kindly use another payment option.', 'vitalswap');
 
 					if (!empty($VitalSwap_response->message)) {
 
-						$order_notice  = sprintf(__('Payment was declined by VitalSwap. Reason: %s.', 'woo-vitalswap'), $VitalSwap_response->message);
-						$failed_notice = sprintf(__('Payment failed using the saved card. Reason: %s. Kindly use another payment option.', 'woo-vitalswap'), $VitalSwap_response->message);
+					   /* translators: Payment decline reason */
+						$order_notice  = sprintf(__('Payment was declined by VitalSwap. Reason: %s.', 'vitalswap'), $VitalSwap_response->message);
+						/* translators: Payment decline reason */
+						$failed_notice = sprintf(__('Payment failed using the saved card. Reason: %s. Kindly use another payment option.', 'vitalswap'), $VitalSwap_response->message);
 					}
 
 					$order->update_status('failed', $order_notice);
@@ -1159,7 +1159,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 			}
 		} else {
 
-			wc_add_notice(__('Payment Failed.', 'woo-vitalswap'), 'error');
+			wc_add_notice(__('Payment Failed.', 'vitalswap'), 'error');
 
 			return false;
 		}
@@ -1171,7 +1171,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	public function add_payment_method()
 	{
 
-		wc_add_notice(__('You can only add a new card when placing an order.', 'woo-vitalswap'), 'error');
+		wc_add_notice(__('You can only add a new card when placing an order.', 'vitalswap'), 'error');
 
 		return;
 	}
@@ -1188,12 +1188,12 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 		echo '<div id="wc-VitalSwap-form">';
 
-		echo '<p>' . __('Thank you for your order, please click the button below to pay with VitalSwap.', 'woo-vitalswap') . '</p>';
+		echo '<p>' . esc_html(__('Thank you for your order, please click the button below to pay with VitalSwap.', 'vitalswap')) . '</p>';
 
-		echo '<div id="VitalSwap_form"><form id="order_review" method="post" action="' . WC()->api_request_url('WC_Gateway_VitalSwap') . '"></form><button class="button" id="VitalSwap-payment-button">' . __('Pay Now', 'woo-vitalswap') . '</button>';
+		echo '<div id="VitalSwap_form"><form id="order_review" method="post" action="' . esc_html(WC()->api_request_url('WC_Gateway_VitalSwap')) . '"></form><button class="button" id="VitalSwap-payment-button">' . esc_html(__('Pay Now', 'vitalswap')) . '</button>';
 
 		if (!$this->remove_cancel_order_button) {
-			echo '  <a class="button cancel" id="VitalSwap-cancel-payment-button" href="' . esc_url($order->get_cancel_order_url()) . '">' . __('Cancel order &amp; restore cart', 'woo-vitalswap') . '</a></div>';
+			echo '  <a class="button cancel" id="VitalSwap-cancel-payment-button" href="' . esc_url($order->get_cancel_order_url()) . '">' . esc_html(__('Cancel order &amp; restore cart', 'vitalswap')) . '</a></div>';
 		}
 
 		echo '</div>';
@@ -1251,14 +1251,17 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 						$order->add_meta_data('_transaction_id', $VitalSwap_ref, true);
 
-						$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment transaction was successful, but the amount paid is not the same as the total order amount.%2$sYour order is currently on hold.%3$sKindly contact us for more information regarding your order and payment status.', 'woo-vitalswap'), '<br />', '<br />', '<br />');
+
+						/* translators: Payment decline reason */
+						$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment transaction was successful, but the amount paid is not the same as the total order amount.%2$sYour order is currently on hold.%3$sKindly contact us for more information regarding your order and payment status.', 'vitalswap'), '<br />', '<br />', '<br />');
 						$notice_type = 'notice';
 
 						// Add Customer Order Note
 						$order->add_order_note($notice, 1);
 
 						// Add Admin Order Note
-						$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Amount paid is less than the total order amount.%3$sAmount Paid was <strong>%4$s (%5$s)</strong> while the total order amount is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'woo-vitalswap'), '<br />', '<br />', '<br />', $currency_symbol, $amount_paid, $currency_symbol, $order_total, '<br />', $VitalSwap_ref);
+						/* translators: 1: Number 1, 2: Number 2,  3:Order Total, 3: Currency Symbol, 4: Transaction Currency, 5: Amount Paid, 6:Transaction Currency, 7: Order Total, 8: Order Total  9: payment reference */
+						$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Amount paid is less than the total order amount.%3$sAmount Paid was <strong>%4$s (%5$s)</strong> while the total order amount is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'vitalswap'), '<br />', '<br />', '<br />', $currency_symbol, $amount_paid, $currency_symbol, $order_total, '<br />', $VitalSwap_ref);
 						$order->add_order_note($admin_order_note);
 
 						function_exists('wc_reduce_stock_levels') ? wc_reduce_stock_levels($order_id) : $order->reduce_order_stock();
@@ -1271,15 +1274,17 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 							$order->update_status('on-hold', '');
 
 							$order->update_meta_data('_transaction_id', $VitalSwap_ref);
-
-							$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment was successful, but the payment currency is different from the order currency.%2$sYour order is currently on-hold.%3$sKindly contact us for more information regarding your order and payment status.', 'woo-vitalswap'), '<br />', '<br />', '<br />');
+							
+							/* translators: Payment on-hold reason */
+							$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment was successful, but your order is currently on-hold.Kindly contact us for more information regarding your order and payment status.', 'vitalswap'), '<br />', '<br />', '<br />');
 							$notice_type = 'notice';
 
 							// Add Customer Order Note
 							$order->add_order_note($notice, 1);
 
 							// Add Admin Order Note
-							$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Order currency is different from the payment currency.%3$sOrder Currency is <strong>%4$s (%5$s)</strong> while the payment currency is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'woo-vitalswap'), '<br />', '<br />', '<br />', $order_currency, $currency_symbol, $payment_currency, $gateway_symbol, '<br />', $VitalSwap_ref);
+							/* translators: 1: Number 1, 2: Number 2,  3:Order Total, 3: Currency Symbol, 4: Transaction Currency, 5: Amount Paid, 6:Transaction Currency, 7: Order Total, 8: Order Total  9: payment reference */
+							$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Order currency is different from the payment currency.%3$sOrder Currency is <strong>%4$s (%5$s)</strong> while the payment currency is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'vitalswap'), '<br />', '<br />', '<br />', $order_currency, $currency_symbol, $payment_currency, $gateway_symbol, '<br />', $VitalSwap_ref);
 							$order->add_order_note($admin_order_note);
 
 							function_exists('wc_reduce_stock_levels') ? wc_reduce_stock_levels($order_id) : $order->reduce_order_stock();
@@ -1288,7 +1293,9 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 						} else {
 
 							$order->payment_complete($VitalSwap_ref);
-							$order->add_order_note(sprintf(__('Payment via VitalSwap successful (Transaction Reference: %s)', 'woo-vitalswap'), $VitalSwap_ref));
+
+							/* translators: Payment reference */
+							$order->add_order_note(sprintf(__('Payment via VitalSwap successful (Transaction Reference: %s)', 'vitalswap'), $VitalSwap_ref));
 
 							if ($this->is_autocomplete_order_enabled($order)) {
 								$order->update_status('completed');
@@ -1309,7 +1316,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 					$order = wc_get_order($order_id);
 
-					$order->update_status('failed', __('Payment was declined by VitalSwap.', 'woo-vitalswap'));
+					$order->update_status('failed', __('Payment was declined by VitalSwap.', 'vitalswap'));
 				}
 			}
 
@@ -1397,14 +1404,16 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 			$order->add_meta_data('_transaction_id', $VitalSwap_ref, true);
 
-			$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment transaction was successful, but the amount paid is not the same as the total order amount.%2$sYour order is currently on hold.%3$sKindly contact us for more information regarding your order and payment status.', 'woo-vitalswap'), '<br />', '<br />', '<br />');
+			/* translators: 1: Number 1, 2: Number 2, 3: Number 3 */
+			$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment transaction was successful, but the amount paid is not the same as the total order amount.%2$sYour order is currently on hold.%3$sKindly contact us for more information regarding your order and payment status.', 'vitalswap'), '<br />', '<br />', '<br />');
 			$notice_type = 'notice';
 
 			// Add Customer Order Note.
 			$order->add_order_note($notice, 1);
 
 			// Add Admin Order Note.
-			$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Amount paid is less than the total order amount.%3$sAmount Paid was <strong>%4$s (%5$s)</strong> while the total order amount is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'woo-vitalswap'), '<br />', '<br />', '<br />', $currency_symbol, $amount_paid, $currency_symbol, $order_total, '<br />', $VitalSwap_ref);
+			/* translators: 1: Number 1, 2: Number 2,  3:Order Total, 3: Currency Symbol, 4: Transaction Currency, 5: Amount Paid, 6:Transaction Currency, 7: Order Total, 8: Order Total  9: payment reference */
+			$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Amount paid is less than the total order amount.%3$sAmount Paid was <strong>%4$s (%5$s)</strong> while the total order amount is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'vitalswap'), '<br />', '<br />', '<br />', $currency_symbol, $amount_paid, $currency_symbol, $order_total, '<br />', $VitalSwap_ref);
 			$order->add_order_note($admin_order_note);
 
 			function_exists('wc_reduce_stock_levels') ? wc_reduce_stock_levels($order_id) : $order->reduce_order_stock();
@@ -1420,14 +1429,16 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 				$order->update_meta_data('_transaction_id', $VitalSwap_ref);
 
-				$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment was successful, but the payment currency is different from the order currency.%2$sYour order is currently on-hold.%3$sKindly contact us for more information regarding your order and payment status.', 'woo-vitalswap'), '<br />', '<br />', '<br />');
+				/* translators: 1: Number 1, 2: Number 2 */
+				$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment was successful, but the payment currency is different from the order currency.%2$sYour order is currently on-hold.%3$sKindly contact us for more information regarding your order and payment status.', 'vitalswap'), '<br />', '<br />', '<br />');
 				$notice_type = 'notice';
 
 				// Add Customer Order Note.
 				$order->add_order_note($notice, 1);
 
 				// Add Admin Order Note.
-				$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Order currency is different from the payment currency.%3$sOrder Currency is <strong>%4$s (%5$s)</strong> while the payment currency is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'woo-vitalswap'), '<br />', '<br />', '<br />', $order_currency, $currency_symbol, $payment_currency, $gateway_symbol, '<br />', $VitalSwap_ref);
+				/* translators: 1: Number 1, 2: Number 2,  3:Order Total, 3: Currency Symbol, 4: Transaction Currency, 5: Amount Paid, 6:Transaction Currency, 7: Order Total, 8: Order Total  9: payment reference */
+				$admin_order_note = sprintf(__('<strong>Look into this order</strong>%1$sThis order is currently on hold.%2$sReason: Order currency is different from the payment currency.%3$sOrder Currency is <strong>%4$s (%5$s)</strong> while the payment currency is <strong>%6$s (%7$s)</strong>%8$s<strong>VitalSwap Transaction Reference:</strong> %9$s', 'vitalswap'), '<br />', '<br />', '<br />', $order_currency, $currency_symbol, $payment_currency, $gateway_symbol, '<br />', $VitalSwap_ref);
 				$order->add_order_note($admin_order_note);
 
 				function_exists('wc_reduce_stock_levels') ? wc_reduce_stock_levels($order_id) : $order->reduce_order_stock();
@@ -1437,7 +1448,8 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 				$order->payment_complete($VitalSwap_ref);
 
-				$order->add_order_note(sprintf(__('Payment via VitalSwap successful (Transaction Reference: %s)', 'woo-vitalswap'), $VitalSwap_ref));
+			  /* translators: Payment reference */	
+				$order->add_order_note(sprintf(__('Payment via VitalSwap successful (Transaction Reference: %s)', 'vitalswap'), $VitalSwap_ref));
 
 				WC()->cart->empty_cart();
 
@@ -1558,7 +1570,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		$custom_fields[] = array(
 			'display_name'  => 'Plugin',
 			'variable_name' => 'plugin',
-			'value'         => 'woo-vitalswap',
+			'value'         => 'vitalswap',
 		);
 
 		if ($this->custom_metadata) {
@@ -1687,7 +1699,8 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 			if ('success' == $VitalSwap_response->data->status) {
 
-				$merchant_note = sprintf(__('Refund for Order ID: #%1$s on %2$s', 'woo-vitalswap'), $order_id, get_site_url());
+				/* translators: 1: OrderID, 2: Order */
+				$merchant_note = sprintf(__('Refund for Order ID: #%1$s on %2$s', 'vitalswap'), $order_id, get_site_url());
 
 				$body = array(
 					'transaction'   => $transaction_id,
@@ -1718,7 +1731,9 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 					if ($refund_response->status) {
 						$amount         = wc_price($amount, array('currency' => $order_currency));
 						$refund_id      = $refund_response->data->id;
-						$refund_message = sprintf(__('Refunded %1$s. Refund ID: %2$s. Reason: %3$s', 'woo-vitalswap'), $amount, $refund_id, $reason);
+					
+						/* translators: 1: Refund amount, 2: Refund ID, 3: Refund Reason */	
+						$refund_message = sprintf(__('Refunded %1$s. Refund ID: %2$s. Reason: %3$s', 'vitalswap'), $amount, $refund_id, $reason);
 						$order->add_order_note($refund_message);
 
 						return true;
@@ -1730,7 +1745,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 					if (isset($refund_response->message)) {
 						return new WP_Error('error', $refund_response->message);
 					} else {
-						return new WP_Error('error', __('Can&#39;t process refund at the moment. Try again later.', 'woo-vitalswap'));
+						return new WP_Error('error', __('Can&#39;t process refund at the moment. Try again later.', 'vitalswap'));
 					}
 				}
 			}

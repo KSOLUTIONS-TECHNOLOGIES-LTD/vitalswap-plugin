@@ -46,7 +46,7 @@ class Controller implements ControllerInterface {
     }        
 
     private function getPathInfo() {
-        $home_path = parse_url( home_url(), PHP_URL_PATH );
+        $home_path = wp_parse_url( home_url(), PHP_URL_PATH );
         return preg_replace( "#^/?{$home_path}/#", '/', esc_url( add_query_arg(array()) ) );
     }
 

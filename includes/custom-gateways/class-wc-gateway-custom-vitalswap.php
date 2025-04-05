@@ -12,59 +12,59 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
  
 		$this->form_fields = array(
 			'enabled'                          => array(
-				'title'       => __( 'Enable/Disable', 'woo-vitalswap' ),
+				'title'       => __( 'Enable/Disable', 'vitalswap' ),
 				/* translators: payment method title */
-				'label'       => sprintf( __( 'Enable VitalSwap - %s', 'woo-vitalswap' ), $this->title ),
+				'label'       => sprintf( __( 'Enable VitalSwap - %s', 'vitalswap' ), $this->title ),
 				'type'        => 'checkbox',
-				'description' => __( 'Enable this gateway as a payment option on the checkout page.', 'woo-vitalswap' ),
+				'description' => __( 'Enable this gateway as a payment option on the checkout page.', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'title'                            => array(
-				'title'       => __( 'Title', 'woo-vitalswap' ),
+				'title'       => __( 'Title', 'vitalswap' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the payment method title which the user sees during checkout.', 'woo-vitalswap' ),
+				'description' => __( 'This controls the payment method title which the user sees during checkout.', 'vitalswap' ),
 				'desc_tip'    => true,
-				'default'     => __( 'VitalSwap', 'woo-vitalswap' ),
+				'default'     => __( 'VitalSwap', 'vitalswap' ),
 			),
 			'description'                      => array(
-				'title'       => __( 'Description', 'woo-vitalswap' ),
+				'title'       => __( 'Description', 'vitalswap' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'woo-vitalswap' ),
+				'description' => __( 'This controls the payment method description which the user sees during checkout.', 'vitalswap' ),
 				'desc_tip'    => true,
 				'default'     => '',
 			),
 			'payment_page'                     => array(
-				'title'       => __( 'Payment Option', 'woo-vitalswap' ),
+				'title'       => __( 'Payment Option', 'vitalswap' ),
 				'type'        => 'select',
-				'description' => __( 'Popup shows the payment popup on the page while Redirect will redirect the customer to VitalSwap to make payment.', 'woo-vitalswap' ),
+				'description' => __( 'Popup shows the payment popup on the page while Redirect will redirect the customer to VitalSwap to make payment.', 'vitalswap' ),
 				'default'     => '',
 				'desc_tip'    => false,
 				'options'     => array(
-					''         => __( 'Select One', 'woo-vitalswap' ),
-					'inline'   => __( 'Popup', 'woo-vitalswap' ),
-					'redirect' => __( 'Redirect', 'woo-vitalswap' ),
+					''         => __( 'Select One', 'vitalswap' ),
+					'inline'   => __( 'Popup', 'vitalswap' ),
+					'redirect' => __( 'Redirect', 'vitalswap' ),
 				),
 			),
 			'autocomplete_order'               => array(
-				'title'       => __( 'Autocomplete Order After Payment', 'woo-vitalswap' ),
-				'label'       => __( 'Autocomplete Order', 'woo-vitalswap' ),
+				'title'       => __( 'Autocomplete Order After Payment', 'vitalswap' ),
+				'label'       => __( 'Autocomplete Order', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-autocomplete-order',
-				'description' => __( 'If enabled, the order will be marked as complete after successful payment', 'woo-vitalswap' ),
+				'description' => __( 'If enabled, the order will be marked as complete after successful payment', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'remove_cancel_order_button'       => array(
-				'title'       => __( 'Remove Cancel Order & Restore Cart Button', 'woo-vitalswap' ),
-				'label'       => __( 'Remove the cancel order & restore cart button on the pay for order page', 'woo-vitalswap' ),
+				'title'       => __( 'Remove Cancel Order & Restore Cart Button', 'vitalswap' ),
+				'label'       => __( 'Remove the cancel order & restore cart button on the pay for order page', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'description' => '',
 				'default'     => 'no',
 			),
 			'split_payment'                    => array(
-				'title'       => __( 'Split Payment', 'woo-vitalswap' ),
-				'label'       => __( 'Enable Split Payment', 'woo-vitalswap' ),
+				'title'       => __( 'Split Payment', 'vitalswap' ),
+				'label'       => __( 'Enable Split Payment', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'description' => '',
 				'class'       => 'woocommerce_vitalswap_split_payment',
@@ -72,16 +72,16 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 				'desc_tip'    => true,
 			),
 			'subaccount_code'                  => array(
-				'title'       => __( 'Subaccount Code', 'woo-vitalswap' ),
+				'title'       => __( 'Subaccount Code', 'vitalswap' ),
 				'type'        => 'text',
-				'description' => __( 'Enter the subaccount code here.', 'woo-vitalswap' ),
-				'class'       => __( 'woocommerce_vitalswap_subaccount_code', 'woo-vitalswap' ),
+				'description' => __( 'Enter the subaccount code here.', 'vitalswap' ),
+				'class'       => __( 'woocommerce_vitalswap_subaccount_code', 'vitalswap' ),
 				'default'     => '',
 			),
 			'split_payment_transaction_charge' => array(
-				'title'             => __( 'Split Payment Transaction Charge', 'woo-vitalswap' ),
+				'title'             => __( 'Split Payment Transaction Charge', 'vitalswap' ),
 				'type'              => 'number',
-				'description'       => __( 'A flat fee to charge the subaccount for this transaction, in Naira (&#8358;). This overrides the split percentage set when the subaccount was created. Ideally, you will need to use this if you are splitting in flat rates (since subaccount creation only allows for percentage split). e.g. 100 for a &#8358;100 flat fee.', 'woo-vitalswap' ),
+				'description'       => __( 'A flat fee to charge the subaccount for this transaction, in Naira (&#8358;). This overrides the split percentage set when the subaccount was created. Ideally, you will need to use this if you are splitting in flat rates (since subaccount creation only allows for percentage split). e.g. 100 for a &#8358;100 flat fee.', 'vitalswap' ),
 				'class'             => 'woocommerce_vitalswap_split_payment_transaction_charge',
 				'default'           => '',
 				'custom_attributes' => array(
@@ -91,139 +91,139 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 				'desc_tip'          => false,
 			),
 			'split_payment_charge_account'     => array(
-				'title'       => __( 'VitalSwap Charges Bearer', 'woo-vitalswap' ),
+				'title'       => __( 'VitalSwap Charges Bearer', 'vitalswap' ),
 				'type'        => 'select',
-				'description' => __( 'Who bears VitalSwap charges?', 'woo-vitalswap' ),
+				'description' => __( 'Who bears VitalSwap charges?', 'vitalswap' ),
 				'class'       => 'woocommerce_vitalswap_split_payment_charge_account',
 				'default'     => '',
 				'desc_tip'    => false,
 				'options'     => array(
-					''           => __( 'Select One', 'woo-vitalswap' ),
-					'account'    => __( 'Account', 'woo-vitalswap' ),
-					'subaccount' => __( 'Subaccount', 'woo-vitalswap' ),
+					''           => __( 'Select One', 'vitalswap' ),
+					'account'    => __( 'Account', 'vitalswap' ),
+					'subaccount' => __( 'Subaccount', 'vitalswap' ),
 				),
 			),
 			'payment_channels'                 => array(
-				'title'             => __( 'Payment Channels', 'woo-vitalswap' ),
+				'title'             => __( 'Payment Channels', 'vitalswap' ),
 				'type'              => 'multiselect',
 				'class'             => 'wc-enhanced-select wc-vitalswap-payment-channels',
-				'description'       => __( 'The payment channels enabled for this gateway', 'woo-vitalswap' ),
+				'description'       => __( 'The payment channels enabled for this gateway', 'vitalswap' ),
 				'default'           => '',
 				'desc_tip'          => true,
 				'select_buttons'    => true,
 				'options'           => $this->channels(),
 				'custom_attributes' => array(
-					'data-placeholder' => __( 'Select payment channels', 'woo-vitalswap' ),
+					'data-placeholder' => __( 'Select payment channels', 'vitalswap' ),
 				),
 			),
 			'cards_allowed'                    => array(
-				'title'             => __( 'Allowed Card Brands', 'woo-vitalswap' ),
+				'title'             => __( 'Allowed Card Brands', 'vitalswap' ),
 				'type'              => 'multiselect',
 				'class'             => 'wc-enhanced-select wc-vitalswap-cards-allowed',
-				'description'       => __( 'The card brands allowed for this gateway. This filter only works with the card payment channel.', 'woo-vitalswap' ),
+				'description'       => __( 'The card brands allowed for this gateway. This filter only works with the card payment channel.', 'vitalswap' ),
 				'default'           => '',
 				'desc_tip'          => true,
 				'select_buttons'    => true,
 				'options'           => $this->card_types(),
 				'custom_attributes' => array(
-					'data-placeholder' => __( 'Select card brands', 'woo-vitalswap' ),
+					'data-placeholder' => __( 'Select card brands', 'vitalswap' ),
 				),
 			),
 			'banks_allowed'                    => array(
-				'title'             => __( 'Allowed Banks Card', 'woo-vitalswap' ),
+				'title'             => __( 'Allowed Banks Card', 'vitalswap' ),
 				'type'              => 'multiselect',
 				'class'             => 'wc-enhanced-select wc-vitalswap-banks-allowed',
-				'description'       => __( 'The banks whose card should be allowed for this gateway. This filter only works with the card payment channel.', 'woo-vitalswap' ),
+				'description'       => __( 'The banks whose card should be allowed for this gateway. This filter only works with the card payment channel.', 'vitalswap' ),
 				'default'           => '',
 				'desc_tip'          => true,
 				'select_buttons'    => true,
 				'options'           => $this->banks(),
 				'custom_attributes' => array(
-					'data-placeholder' => __( 'Select banks', 'woo-vitalswap' ),
+					'data-placeholder' => __( 'Select banks', 'vitalswap' ),
 				),
 			),
 			'payment_icons'                    => array(
-				'title'             => __( 'Payment Icons', 'woo-vitalswap' ),
+				'title'             => __( 'Payment Icons', 'vitalswap' ),
 				'type'              => 'multiselect',
 				'class'             => 'wc-enhanced-select wc-vitalswap-payment-icons',
-				'description'       => __( 'The payment icons to be displayed on the checkout page.', 'woo-vitalswap' ),
+				'description'       => __( 'The payment icons to be displayed on the checkout page.', 'vitalswap' ),
 				'default'           => '',
 				'desc_tip'          => true,
 				'select_buttons'    => true,
 				'options'           => $this->payment_icons(),
 				'custom_attributes' => array(
-					'data-placeholder' => __( 'Select payment icons', 'woo-vitalswap' ),
+					'data-placeholder' => __( 'Select payment icons', 'vitalswap' ),
 				),
 			),
 			'custom_metadata'                  => array(
-				'title'       => __( 'Custom Metadata', 'woo-vitalswap' ),
-				'label'       => __( 'Enable Custom Metadata', 'woo-vitalswap' ),
+				'title'       => __( 'Custom Metadata', 'vitalswap' ),
+				'label'       => __( 'Enable Custom Metadata', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-metadata',
-				'description' => __( 'If enabled, you will be able to send more information about the order to VitalSwap.', 'woo-vitalswap' ),
+				'description' => __( 'If enabled, you will be able to send more information about the order to VitalSwap.', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_order_id'                    => array(
-				'title'       => __( 'Order ID', 'woo-vitalswap' ),
-				'label'       => __( 'Send Order ID', 'woo-vitalswap' ),
+				'title'       => __( 'Order ID', 'vitalswap' ),
+				'label'       => __( 'Send Order ID', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-meta-order-id',
-				'description' => __( 'If checked, the Order ID will be sent to VitalSwap', 'woo-vitalswap' ),
+				'description' => __( 'If checked, the Order ID will be sent to VitalSwap', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_name'                        => array(
-				'title'       => __( 'Customer Name', 'woo-vitalswap' ),
-				'label'       => __( 'Send Customer Name', 'woo-vitalswap' ),
+				'title'       => __( 'Customer Name', 'vitalswap' ),
+				'label'       => __( 'Send Customer Name', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-meta-name',
-				'description' => __( 'If checked, the customer full name will be sent to VitalSwap', 'woo-vitalswap' ),
+				'description' => __( 'If checked, the customer full name will be sent to VitalSwap', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_email'                       => array(
-				'title'       => __( 'Customer Email', 'woo-vitalswap' ),
-				'label'       => __( 'Send Customer Email', 'woo-vitalswap' ),
+				'title'       => __( 'Customer Email', 'vitalswap' ),
+				'label'       => __( 'Send Customer Email', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-meta-email',
-				'description' => __( 'If checked, the customer email address will be sent to VitalSwap', 'woo-vitalswap' ),
+				'description' => __( 'If checked, the customer email address will be sent to VitalSwap', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_phone'                       => array(
-				'title'       => __( 'Customer Phone', 'woo-vitalswap' ),
-				'label'       => __( 'Send Customer Phone', 'woo-vitalswap' ),
+				'title'       => __( 'Customer Phone', 'vitalswap' ),
+				'label'       => __( 'Send Customer Phone', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-meta-phone',
-				'description' => __( 'If checked, the customer phone will be sent to VitalSwap', 'woo-vitalswap' ),
+				'description' => __( 'If checked, the customer phone will be sent to VitalSwap', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_billing_address'             => array(
-				'title'       => __( 'Order Billing Address', 'woo-vitalswap' ),
-				'label'       => __( 'Send Order Billing Address', 'woo-vitalswap' ),
+				'title'       => __( 'Order Billing Address', 'vitalswap' ),
+				'label'       => __( 'Send Order Billing Address', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-meta-billing-address',
-				'description' => __( 'If checked, the order billing address will be sent to VitalSwap', 'woo-vitalswap' ),
+				'description' => __( 'If checked, the order billing address will be sent to VitalSwap', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_shipping_address'            => array(
-				'title'       => __( 'Order Shipping Address', 'woo-vitalswap' ),
-				'label'       => __( 'Send Order Shipping Address', 'woo-vitalswap' ),
+				'title'       => __( 'Order Shipping Address', 'vitalswap' ),
+				'label'       => __( 'Send Order Shipping Address', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-meta-shipping-address',
-				'description' => __( 'If checked, the order shipping address will be sent to VitalSwap', 'woo-vitalswap' ),
+				'description' => __( 'If checked, the order shipping address will be sent to VitalSwap', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
 			'meta_products'                    => array(
-				'title'       => __( 'Product(s) Purchased', 'woo-vitalswap' ),
-				'label'       => __( 'Send Product(s) Purchased', 'woo-vitalswap' ),
+				'title'       => __( 'Product(s) Purchased', 'vitalswap' ),
+				'label'       => __( 'Send Product(s) Purchased', 'vitalswap' ),
 				'type'        => 'checkbox',
 				'class'       => 'wc-vitalswap-meta-products',
-				'description' => __( 'If checked, the product(s) purchased will be sent to VitalSwap', 'woo-vitalswap' ),
+				'description' => __( 'If checked, the product(s) purchased will be sent to VitalSwap', 'vitalswap' ),
 				'default'     => 'no',
 				'desc_tip'    => true,
 			),
@@ -243,11 +243,11 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 		<h2>
 			<?php
 			/* translators: payment method title */
-			printf( __( 'VitalSwap - %s', 'woo-vitalswap' ), esc_attr( $this->title ) );
+			printf( esc_html(__( 'VitalSwap - %s', 'vitalswap' )), esc_attr( $this->title ) );
 			?>
 			<?php
 			if ( function_exists( 'wc_back_link' ) ) {
-				wc_back_link( __( 'Return to payments', 'woo-vitalswap' ), $checkout_settings_url );
+				wc_back_link( __( 'Return to payments', 'vitalswap' ), $checkout_settings_url );
 			}
 			?>
 		</h2>
@@ -255,7 +255,7 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 		<h4>
 			<?php
 			/* translators: link to VitalSwap developers settings page */
-			printf( __( 'Important: To avoid situations where bad network makes it impossible to verify transactions, set your webhook URL <a href="%s" target="_blank" rel="noopener noreferrer">here</a> to the URL below', 'woo-vitalswap' ), 'https://dashboard.vitalswap.co/#/settings/developer' );
+			printf(esc_html(__( 'Important: To avoid situations where bad network makes it impossible to verify transactions, set your webhook URL <a href="%s" target="_blank" rel="noopener noreferrer">here</a> to the URL below', 'vitalswap' )), 'https://dashboard.vitalswap.co/#/settings/developer' );
 			?>
 		</h4>
 
@@ -266,7 +266,7 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 		<p>
 			<?php
 			/* translators: link to VitalSwap general settings page */
-			printf( __( 'To configure your VitalSwap API keys and enable/disable test mode, do that <a href="%s">here</a>', 'woo-vitalswap' ), esc_url( $vitalswap_settings_url ) );
+			printf(esc_html(__( 'To configure your VitalSwap API keys and enable/disable test mode, do that <a href="%s">here</a>', 'vitalswap' )), esc_url( $vitalswap_settings_url ) );
 			?>
 		</p>
 
@@ -281,7 +281,7 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 		} else {
 
 			/* translators: disabled message */
-			echo '<div class="inline error"><p><strong>' . sprintf( __( 'VitalSwap Payment Gateway Disabled: %s', 'woo-vitalswap' ), esc_attr( $this->msg ) ) . '</strong></p></div>';
+			echo '<div class="inline error"><p><strong>' . sprintf( esc_html(__( 'VitalSwap Payment Gateway Disabled: %s', 'vitalswap' )), esc_attr( $this->msg ) ) . '</strong></p></div>';
 
 		}
 
@@ -293,11 +293,11 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 	public function channels() {
 
 		return array(
-			'card'          => __( 'Cards', 'woo-vitalswap' ),
-			'bank'          => __( 'Pay with Bank', 'woo-vitalswap' ),
-			'ussd'          => __( 'USSD', 'woo-vitalswap' ),
-			'qr'            => __( 'QR', 'woo-vitalswap' ),
-			'bank_transfer' => __( 'Bank Transfer', 'woo-vitalswap' ),
+			'card'          => __( 'Cards', 'vitalswap' ),
+			'bank'          => __( 'Pay with Bank', 'vitalswap' ),
+			'ussd'          => __( 'USSD', 'vitalswap' ),
+			'qr'            => __( 'QR', 'vitalswap' ),
+			'bank_transfer' => __( 'Bank Transfer', 'vitalswap' ),
 		);
 
 	}
@@ -308,9 +308,9 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 	public function card_types() {
 
 		return array(
-			'visa'       => __( 'Visa', 'woo-vitalswap' ),
-			'verve'      => __( 'Verve', 'woo-vitalswap' ),
-			'mastercard' => __( 'Mastercard', 'woo-vitalswap' ),
+			'visa'       => __( 'Visa', 'vitalswap' ),
+			'verve'      => __( 'Verve', 'vitalswap' ),
+			'mastercard' => __( 'Mastercard', 'vitalswap' ),
 		);
 
 	}
@@ -321,34 +321,34 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 	public function banks() {
 
 		return array(
-			'044'  => __( 'Access Bank', 'woo-vitalswap' ),
-			'035A' => __( 'ALAT by WEMA', 'woo-vitalswap' ),
-			'401'  => __( 'ASO Savings and Loans', 'woo-vitalswap' ),
-			'023'  => __( 'Citibank Nigeria', 'woo-vitalswap' ),
-			'063'  => __( 'Access Bank (Diamond)', 'woo-vitalswap' ),
-			'050'  => __( 'Ecobank Nigeria', 'woo-vitalswap' ),
-			'562'  => __( 'Ekondo Microfinance Bank', 'woo-vitalswap' ),
-			'084'  => __( 'Enterprise Bank', 'woo-vitalswap' ),
-			'070'  => __( 'Fidelity Bank', 'woo-vitalswap' ),
-			'011'  => __( 'First Bank of Nigeria', 'woo-vitalswap' ),
-			'214'  => __( 'First City Monument Bank', 'woo-vitalswap' ),
-			'058'  => __( 'Guaranty Trust Bank', 'woo-vitalswap' ),
-			'030'  => __( 'Heritage Bank', 'woo-vitalswap' ),
-			'301'  => __( 'Jaiz Bank', 'woo-vitalswap' ),
-			'082'  => __( 'Keystone Bank', 'woo-vitalswap' ),
-			'014'  => __( 'MainStreet Bank', 'woo-vitalswap' ),
-			'526'  => __( 'Parallex Bank', 'woo-vitalswap' ),
-			'076'  => __( 'Polaris Bank Limited', 'woo-vitalswap' ),
-			'101'  => __( 'Providus Bank', 'woo-vitalswap' ),
-			'221'  => __( 'Stanbic IBTC Bank', 'woo-vitalswap' ),
-			'068'  => __( 'Standard Chartered Bank', 'woo-vitalswap' ),
-			'232'  => __( 'Sterling Bank', 'woo-vitalswap' ),
-			'100'  => __( 'Suntrust Bank', 'woo-vitalswap' ),
-			'032'  => __( 'Union Bank of Nigeria', 'woo-vitalswap' ),
-			'033'  => __( 'United Bank For Africa', 'woo-vitalswap' ),
-			'215'  => __( 'Unity Bank', 'woo-vitalswap' ),
-			'035'  => __( 'Wema Bank', 'woo-vitalswap' ),
-			'057'  => __( 'Zenith Bank', 'woo-vitalswap' ),
+			'044'  => __( 'Access Bank', 'vitalswap' ),
+			'035A' => __( 'ALAT by WEMA', 'vitalswap' ),
+			'401'  => __( 'ASO Savings and Loans', 'vitalswap' ),
+			'023'  => __( 'Citibank Nigeria', 'vitalswap' ),
+			'063'  => __( 'Access Bank (Diamond)', 'vitalswap' ),
+			'050'  => __( 'Ecobank Nigeria', 'vitalswap' ),
+			'562'  => __( 'Ekondo Microfinance Bank', 'vitalswap' ),
+			'084'  => __( 'Enterprise Bank', 'vitalswap' ),
+			'070'  => __( 'Fidelity Bank', 'vitalswap' ),
+			'011'  => __( 'First Bank of Nigeria', 'vitalswap' ),
+			'214'  => __( 'First City Monument Bank', 'vitalswap' ),
+			'058'  => __( 'Guaranty Trust Bank', 'vitalswap' ),
+			'030'  => __( 'Heritage Bank', 'vitalswap' ),
+			'301'  => __( 'Jaiz Bank', 'vitalswap' ),
+			'082'  => __( 'Keystone Bank', 'vitalswap' ),
+			'014'  => __( 'MainStreet Bank', 'vitalswap' ),
+			'526'  => __( 'Parallex Bank', 'vitalswap' ),
+			'076'  => __( 'Polaris Bank Limited', 'vitalswap' ),
+			'101'  => __( 'Providus Bank', 'vitalswap' ),
+			'221'  => __( 'Stanbic IBTC Bank', 'vitalswap' ),
+			'068'  => __( 'Standard Chartered Bank', 'vitalswap' ),
+			'232'  => __( 'Sterling Bank', 'vitalswap' ),
+			'100'  => __( 'Suntrust Bank', 'vitalswap' ),
+			'032'  => __( 'Union Bank of Nigeria', 'vitalswap' ),
+			'033'  => __( 'United Bank For Africa', 'vitalswap' ),
+			'215'  => __( 'Unity Bank', 'vitalswap' ),
+			'035'  => __( 'Wema Bank', 'vitalswap' ),
+			'057'  => __( 'Zenith Bank', 'vitalswap' ),
 		);
 
 	}
@@ -359,41 +359,41 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 	public function payment_icons() {
 
 		return array(
-			'verve'         => __( 'Verve', 'woo-vitalswap' ),
-			'visa'          => __( 'Visa', 'woo-vitalswap' ),
-			'mastercard'    => __( 'Mastercard', 'woo-vitalswap' ),
-			'vitalswapwhite' => __( 'Secured by VitalSwap White', 'woo-vitalswap' ),
-			'vitalswapblue'  => __( 'Secured by VitalSwap Blue', 'woo-vitalswap' ),
-			'vitalswap-wc'   => __( 'VitalSwap Nigeria', 'woo-vitalswap' ),
-			'vitalswap-gh'   => __( 'VitalSwap Ghana', 'woo-vitalswap' ),
-			'access'        => __( 'Access Bank', 'woo-vitalswap' ),
-			'alat'          => __( 'ALAT by WEMA', 'woo-vitalswap' ),
-			'aso'           => __( 'ASO Savings and Loans', 'woo-vitalswap' ),
-			'citibank'      => __( 'Citibank Nigeria', 'woo-vitalswap' ),
-			'diamond'       => __( 'Access Bank (Diamond)', 'woo-vitalswap' ),
-			'ecobank'       => __( 'Ecobank Nigeria', 'woo-vitalswap' ),
-			'ekondo'        => __( 'Ekondo Microfinance Bank', 'woo-vitalswap' ),
-			'enterprise'    => __( 'Enterprise Bank', 'woo-vitalswap' ),
-			'fidelity'      => __( 'Fidelity Bank', 'woo-vitalswap' ),
-			'firstbank'     => __( 'First Bank of Nigeria', 'woo-vitalswap' ),
-			'fcmb'          => __( 'First City Monument Bank', 'woo-vitalswap' ),
-			'gtbank'        => __( 'Guaranty Trust Bank', 'woo-vitalswap' ),
-			'heritage'      => __( 'Heritage Bank', 'woo-vitalswap' ),
-			'jaiz'          => __( 'Jaiz Bank', 'woo-vitalswap' ),
-			'keystone'      => __( 'Keystone Bank', 'woo-vitalswap' ),
-			'mainstreet'    => __( 'MainStreet Bank', 'woo-vitalswap' ),
-			'parallex'      => __( 'Parallex Bank', 'woo-vitalswap' ),
-			'polaris'       => __( 'Polaris Bank Limited', 'woo-vitalswap' ),
-			'providus'      => __( 'Providus Bank', 'woo-vitalswap' ),
-			'stanbic'       => __( 'Stanbic IBTC Bank', 'woo-vitalswap' ),
-			'standard'      => __( 'Standard Chartered Bank', 'woo-vitalswap' ),
-			'sterling'      => __( 'Sterling Bank', 'woo-vitalswap' ),
-			'suntrust'      => __( 'Suntrust Bank', 'woo-vitalswap' ),
-			'union'         => __( 'Union Bank of Nigeria', 'woo-vitalswap' ),
-			'uba'           => __( 'United Bank For Africa', 'woo-vitalswap' ),
-			'unity'         => __( 'Unity Bank', 'woo-vitalswap' ),
-			'wema'          => __( 'Wema Bank', 'woo-vitalswap' ),
-			'zenith'        => __( 'Zenith Bank', 'woo-vitalswap' ),
+			'verve'         => __( 'Verve', 'vitalswap' ),
+			'visa'          => __( 'Visa', 'vitalswap' ),
+			'mastercard'    => __( 'Mastercard', 'vitalswap' ),
+			'vitalswapwhite' => __( 'Secured by VitalSwap White', 'vitalswap' ),
+			'vitalswapblue'  => __( 'Secured by VitalSwap Blue', 'vitalswap' ),
+			'vitalswap-wc'   => __( 'VitalSwap Nigeria', 'vitalswap' ),
+			'vitalswap-gh'   => __( 'VitalSwap Ghana', 'vitalswap' ),
+			'access'        => __( 'Access Bank', 'vitalswap' ),
+			'alat'          => __( 'ALAT by WEMA', 'vitalswap' ),
+			'aso'           => __( 'ASO Savings and Loans', 'vitalswap' ),
+			'citibank'      => __( 'Citibank Nigeria', 'vitalswap' ),
+			'diamond'       => __( 'Access Bank (Diamond)', 'vitalswap' ),
+			'ecobank'       => __( 'Ecobank Nigeria', 'vitalswap' ),
+			'ekondo'        => __( 'Ekondo Microfinance Bank', 'vitalswap' ),
+			'enterprise'    => __( 'Enterprise Bank', 'vitalswap' ),
+			'fidelity'      => __( 'Fidelity Bank', 'vitalswap' ),
+			'firstbank'     => __( 'First Bank of Nigeria', 'vitalswap' ),
+			'fcmb'          => __( 'First City Monument Bank', 'vitalswap' ),
+			'gtbank'        => __( 'Guaranty Trust Bank', 'vitalswap' ),
+			'heritage'      => __( 'Heritage Bank', 'vitalswap' ),
+			'jaiz'          => __( 'Jaiz Bank', 'vitalswap' ),
+			'keystone'      => __( 'Keystone Bank', 'vitalswap' ),
+			'mainstreet'    => __( 'MainStreet Bank', 'vitalswap' ),
+			'parallex'      => __( 'Parallex Bank', 'vitalswap' ),
+			'polaris'       => __( 'Polaris Bank Limited', 'vitalswap' ),
+			'providus'      => __( 'Providus Bank', 'vitalswap' ),
+			'stanbic'       => __( 'Stanbic IBTC Bank', 'vitalswap' ),
+			'standard'      => __( 'Standard Chartered Bank', 'vitalswap' ),
+			'sterling'      => __( 'Sterling Bank', 'vitalswap' ),
+			'suntrust'      => __( 'Suntrust Bank', 'vitalswap' ),
+			'union'         => __( 'Union Bank of Nigeria', 'vitalswap' ),
+			'uba'           => __( 'United Bank For Africa', 'vitalswap' ),
+			'unity'         => __( 'Unity Bank', 'vitalswap' ),
+			'wema'          => __( 'Wema Bank', 'vitalswap' ),
+			'zenith'        => __( 'Zenith Bank', 'vitalswap' ),
 		);
 
 	}

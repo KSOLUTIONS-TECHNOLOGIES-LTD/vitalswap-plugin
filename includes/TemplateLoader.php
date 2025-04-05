@@ -12,7 +12,7 @@ class TemplateLoader implements TemplateLoaderInterface {
     public function load() {
         do_action( 'template_redirect' );
         $template = locate_template( array_filter( $this->templates ) );
-        echo '<pre>'; print_r($template); echo '</pre>';
+       
         $filtered = apply_filters( 'template_include',
             apply_filters( 'virtual_page_template', $template )
         );

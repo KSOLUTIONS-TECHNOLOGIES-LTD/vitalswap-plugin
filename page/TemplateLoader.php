@@ -28,7 +28,7 @@ class TemplateLoader implements TemplateLoaderInterface {
             load_template( $located, $require_once );
         }
 
-        echo '<pre>'; print_r($located); echo '</pre>';
+      
 
         return $located;
     }

@@ -14,7 +14,7 @@
  * Requires PHP: 7.4
  * WC requires at least: 8.0
  * WC tested up to: 9.1
- * Text Domain: woo-vitalswap
+ * Text Domain: vitalswap
  * Domain Path: /languages
  */
 
@@ -31,12 +31,12 @@ define('WC_VitalSwap_URL', untrailingslashit(plugins_url('/', __FILE__)));
 define('WC_VitalSwap_VERSION', '2.0');
 
 /**
- * Initialise VitalSwap WooCommerce payment gateway.
+ * Initialise VitalSwap payment gateway.
  */
 function wc_VitalSwap_init()
 {
 
-	load_plugin_textdomain('woo-vitalswap', false, plugin_basename(dirname(__FILE__)) . '/languages');
+	load_plugin_textdomain('vitalswap', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
 	if (!class_exists('WC_Payment_Gateway')) {
 		add_action('admin_notices', 'tbz_WC_VitalSwap_wc_missing_notice');
@@ -95,22 +95,21 @@ function wc_VitalSwap_init()
 }
 add_action('plugins_loaded', 'wc_VitalSwap_init', 99);
 
-add_action( 'gm_virtual_pages', function( $controller ) {
+add_action('gm_virtual_pages', function ($controller) {
 
 
 	//plugin_dir_path( __FILE__ )  . 'templates/checkout.php'
-    // first page
-    $controller->addPage( new Page( '/vitalswap/checkout' ) )
-        ->setTitle( 'VitalSwap Checkout Page ' )
-        ->setTemplate('checkout.php');
+	// first page
+	$controller->addPage(new Page('/vitalswap/checkout'))
+		->setTitle('VitalSwap Checkout Page ')
+		->setTemplate('checkout.php');
 
 
-    // second page
-    $controller->addPage( new Page( '/vitalswap/thank-you' ) )
-        ->setTitle( 'My Second Custom Page' )
-        ->setTemplate('templates/thank-you.php');
-
-} );
+	// second page
+	$controller->addPage(new Page('/vitalswap/thank-you'))
+		->setTitle('My Second Custom Page')
+		->setTemplate('templates/thank-you.php');
+});
 
 /**
  * Add Settings link to the plugin entry in the plugins menu.
@@ -123,7 +122,7 @@ function tbz_woo_VitalSwap_plugin_action_links($links)
 {
 
 	$settings_link = array(
-		'settings' => '<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=VitalSwap') . '" title="' . __('View VitalSwap WooCommerce Settings', 'woo-vitalswap') . '">' . __('Settings', 'woo-vitalswap') . '</a>',
+		'settings' => '<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=VitalSwap') . '" title="' . __('View VitalSwap WooCommerce Settings', 'vitalswap') . '">' . __('Settings', 'vitalswap') . '</a>',
 	);
 
 	return array_merge($settings_link, $links);
@@ -194,7 +193,8 @@ function tbz_wc_add_VitalSwap_gateway($methods)
  */
 function tbz_WC_VitalSwap_wc_missing_notice()
 {
-	echo '<div class="error"><p><strong>' . sprintf(__('VitalSwap requires WooCommerce to be installed and active. Click %s to install WooCommerce.', 'woo-vitalswap'), '<a href="' . admin_url('plugin-install.php?tab=plugin-information&plugin=woocommerce&TB_iframe=true&width=772&height=539') . '" class="thickbox open-plugin-details-modal">here</a>') . '</strong></p></div>';
+	/* translators: WooCommerce installation link  */
+	echo esc_html('<div class="error"><p><strong>' . sprintf(__('VitalSwap requires WooCommerce to be installed and active. Click %s to install WooCommerce.', 'vitalswap'), '<a href="' . admin_url('plugin-install.php?tab=plugin-information&plugin=woocommerce&TB_iframe=true&width=772&height=539') . '" class="thickbox open-plugin-details-modal">here</a>') . '</strong></p></div>');
 }
 
 /**
@@ -231,14 +231,14 @@ function tbz_WC_VitalSwap_testmode_notice()
 	}
 
 	$note = new Note();
-	$note->set_title(__('VitalSwap test mode enabled', 'woo-vitalswap'));
-	$note->set_content(__('VitalSwap test mode is currently enabled. Remember to disable it when you want to start accepting live payment on your site.', 'woo-vitalswap'));
+	$note->set_title(__('VitalSwap test mode enabled', 'vitalswap'));
+	$note->set_content(__('VitalSwap test mode is currently enabled. Remember to disable it when you want to start accepting live payment on your site.', 'vitalswap'));
 	$note->set_type(Note::E_WC_ADMIN_NOTE_INFORMATIONAL);
 	$note->set_layout('plain');
 	$note->set_is_snoozable(false);
 	$note->set_name('vitalswap-test-mode');
-	$note->set_source('woo-vitalswap');
-	$note->add_action('disable-vitalswap-test-mode', __('Disable VitalSwap test mode', 'woo-vitalswap'), admin_url('admin.php?page=wc-settings&tab=checkout&section=VitalSwap'));
+	$note->set_source('vitalswap');
+	$note->add_action('disable-vitalswap-test-mode', __('Disable VitalSwap test mode', 'vitalswap'), admin_url('admin.php?page=wc-settings&tab=checkout&section=VitalSwap'));
 	$note->save();
 }
 

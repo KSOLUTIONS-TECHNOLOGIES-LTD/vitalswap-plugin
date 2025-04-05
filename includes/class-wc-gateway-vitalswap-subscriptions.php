@@ -39,7 +39,7 @@ class WC_Gateway_VitalSwap_Subscriptions extends WC_Gateway_VitalSwap {
 
 			$order->payment_complete();
 
-			$order->add_order_note( __( 'This subscription has a free trial, reason for the 0 amount', 'woo-VitalSwap' ) );
+			$order->add_order_note( __( 'This subscription has a free trial, reason for the 0 amount', 'vitalswap' ) );
 
 			return array(
 				'result'   => 'success',
@@ -66,7 +66,8 @@ class WC_Gateway_VitalSwap_Subscriptions extends WC_Gateway_VitalSwap {
 
 		if ( is_wp_error( $response ) ) {
 
-			$renewal_order->update_status( 'failed', sprintf( __( 'VitalSwap Transaction Failed (%s)', 'woo-VitalSwap' ), $response->get_error_message() ) );
+				/* translators: Transaction failure message  */
+				$renewal_order->update_status( 'failed', sprintf( __( 'VitalSwap Transaction Failed (%s)', 'vitalswap' ), $response->get_error_message() ) );
 
 		}
 
@@ -139,7 +140,8 @@ class WC_Gateway_VitalSwap_Subscriptions extends WC_Gateway_VitalSwap {
 
 					$order->payment_complete( $VitalSwap_ref );
 
-					$message = sprintf( __( 'Payment via VitalSwap successful (Transaction Reference: %s)', 'woo-VitalSwap' ), $VitalSwap_ref );
+					/* translators: Transaction reference  */
+					$message = sprintf( __( 'Payment via VitalSwap successful (Transaction Reference: %s)', 'vitalswap' ), $VitalSwap_ref );
 
 					$order->add_order_note( $message );
 
@@ -151,10 +153,12 @@ class WC_Gateway_VitalSwap_Subscriptions extends WC_Gateway_VitalSwap {
 
 				} else {
 
-					$gateway_response = __( 'VitalSwap payment failed.', 'woo-VitalSwap' );
+					$gateway_response = __( 'VitalSwap payment failed.', 'vitalswap' );
 
 					if ( isset( $VitalSwap_response->data->gateway_response ) && ! empty( $VitalSwap_response->data->gateway_response ) ) {
-						$gateway_response = sprintf( __( 'VitalSwap payment failed. Reason: %s', 'woo-VitalSwap' ), $VitalSwap_response->data->gateway_response );
+						
+						/* translators: Transaction failure message  */
+						$gateway_response = sprintf( __( 'VitalSwap payment failed. Reason: %s', 'vitalswap' ), $VitalSwap_response->data->gateway_response );
 					}
 
 					return new WP_Error( 'VitalSwap_error', $gateway_response );
@@ -163,7 +167,7 @@ class WC_Gateway_VitalSwap_Subscriptions extends WC_Gateway_VitalSwap {
 			}
 		}
 
-		return new WP_Error( 'VitalSwap_error', __( 'This subscription can&#39;t be renewed automatically. The customer will have to login to their account to renew their subscription', 'woo-VitalSwap' ) );
+		return new WP_Error( 'VitalSwap_error', __( 'This subscription can&#39;t be renewed automatically. The customer will have to login to their account to renew their subscription', 'vitalswap' ) );
 
 	}
 

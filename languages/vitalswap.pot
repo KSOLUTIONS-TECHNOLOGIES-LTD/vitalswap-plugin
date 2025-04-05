@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.4.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: woo-vitalswap.php\n"
+"X-Poedit-WPHeader: vitalswap.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -83,7 +83,15 @@ msgid ""
 "(CFA), or EGP (E£) <a href=\"%s\">here</a>"
 msgstr ""
 
-#: includes/class-wc-gateway-vitalswap.php:330
+#: includes/class-wc-gateway-vitalswap.php:313
+#, php-format
+msgid ""
+"VitalSwap does not support your store currency. Kindly set it to either NGN "
+"(&#8358), GHS (&#x20b5;), USD (&#36;), KES (KSh), RWF (R₣), ZAR (R), XOF "
+"(CFA), or EGP (E£) <a href=\"%s\">here</a>"
+msgstr ""
+
+#: includes/class-wc-gateway-vitalswap.php:355
 #, php-format
 msgid ""
 "Please enter your VitalSwap merchant details <a href=\"%s\">here</a> to be "
@@ -903,32 +911,32 @@ msgstr ""
 msgid "VitalSwap "
 msgstr ""
 
-#: woo-vitalswap.php:75
+#: vitalswap.php:75
 msgid "View VitalSwap WooCommerce Settings"
 msgstr ""
 
-#: woo-vitalswap.php:75
+#: vitalswap.php:75
 msgid "Settings"
 msgstr ""
 
-#: woo-vitalswap.php:146
+#: vitalswap.php:146
 #, php-format
 msgid ""
 "VitalSwap requires WooCommerce to be installed and active. Click %s to "
 "install WooCommerce."
 msgstr ""
 
-#: woo-vitalswap.php:182
+#: vitalswap.php:182
 msgid "VitalSwap test mode enabled"
 msgstr ""
 
-#: woo-vitalswap.php:183
+#: vitalswap.php:183
 msgid ""
 "VitalSwap test mode is currently enabled. Remember to disable it when you "
 "want to start accepting live payment on your site."
 msgstr ""
 
-#: woo-vitalswap.php:189
+#: vitalswap.php:189
 msgid "Disable VitalSwap test mode"
 msgstr ""
 
@@ -941,7 +949,7 @@ msgid "https://vitalswap.com"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "WooCommerce payment gateway for VitalSwap"
+msgid "VitalSwap payment gateway for WooCommerce  "
 msgstr ""
 
 #. Author of the plugin/theme

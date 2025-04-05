@@ -1,6 +1,7 @@
 <?php
 
-class WC_Gateway_VitalSwap_Three extends WC_Gateway_Custom_VitalSwap {
+class WC_Gateway_VitalSwap_Three extends WC_Gateway_Custom_VitalSwap
+{
 
 	/**
 	 * Payment channels.
@@ -40,20 +41,24 @@ class WC_Gateway_VitalSwap_Three extends WC_Gateway_Custom_VitalSwap {
 	/**
 	 * WC_Gateway_VitalSwap_Three constructor.
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 
 		$this->id = 'vitalswap-three';
 
-		$gateway_title = $this->get_option( 'title' );
+		$gateway_title = $this->get_option('title');
 
-		if ( empty( $gateway_title ) ) {
-			$gateway_title = __( 'Three', 'woo-vitalswap' );
+		if (empty($gateway_title)) {
+			$gateway_title = __('Three', 'vitalswap');
 		}
 
-		$this->method_title       = sprintf( __( 'vitalswap - %s', 'woo-vitalswap' ), $gateway_title );
-		$this->method_description = sprintf( __( 'vitalswap provide merchants with the tools and services needed to accept online payments from local and international customers using Mastercard, Visa, Verve Cards and Bank Accounts. <a href="%1$s" target="_blank">Sign up</a> for a vitalswap account, and <a href="%2$s" target="_blank">get your API keys</a>.', 'woo-vitalswap' ), 'https://vitalswap.com', 'https://dashboard.vitalswap.com/#/settings/developer' );
+		/* translators: Wallet Payment  */
+		$this->method_title       = sprintf(esc_html(__('vitalswap - %s', 'vitalswap')), $gateway_title);
 
-		$this->payment_page = $this->get_option( 'payment_page' );
+		/* translators: 1:vitalswap signup link, 2: vitalswap API Key   */
+		$this->method_description = sprintf(esc_html(__('vitalswap provide merchants with the tools and services needed to accept online payments from local and international customers using Mastercard, Visa, Verve Cards and Bank Accounts. <a href="%1$s" target="_blank">Sign up</a> for a vitalswap account, and <a href="%2$s" target="_blank">get your API keys</a>.', 'vitalswap')), 'https://vitalswap.com', 'https://dashboard.vitalswap.com/#/settings/developer');
+
+		$this->payment_page = $this->get_option('payment_page');
 
 		$this->has_fields = true;
 
@@ -71,19 +76,19 @@ class WC_Gateway_VitalSwap_Three extends WC_Gateway_Custom_VitalSwap {
 			'subscription_payment_method_change_customer',
 		);
 
-		$this->vitalswap_settings = get_option( 'woocommerce_vitalswap_settings', '' );
+		$this->vitalswap_settings = get_option('woocommerce_vitalswap_settings', '');
 
 		// Get setting values.
 		$this->title       = $gateway_title;
-		$this->description = $this->get_option( 'description' );
-		$this->enabled     = $this->get_option( 'enabled' );
+		$this->description = $this->get_option('description');
+		$this->enabled     = $this->get_option('enabled');
 
 		$this->testmode = $this->vitalswap_settings['testmode'] === 'yes' ? true : false;
 
-		$this->payment_channels = $this->get_option( 'payment_channels' );
+		$this->payment_channels = $this->get_option('payment_channels');
 
-		$this->cards = $this->get_option( 'cards_allowed' );
-		$this->banks = $this->get_option( 'banks_allowed' );
+		$this->cards = $this->get_option('cards_allowed');
+		$this->banks = $this->get_option('banks_allowed');
 
 		$this->test_public_key = $this->vitalswap_settings['test_public_key'];
 		$this->test_secret_key = $this->vitalswap_settings['test_secret_key'];
@@ -93,23 +98,23 @@ class WC_Gateway_VitalSwap_Three extends WC_Gateway_Custom_VitalSwap {
 
 		$this->saved_cards = $this->vitalswap_settings['saved_cards'] === 'yes' ? true : false;
 
-		$this->split_payment              = $this->get_option( 'split_payment' ) === 'yes' ? true : false;
-		$this->remove_cancel_order_button = $this->get_option( 'remove_cancel_order_button' ) === 'yes' ? true : false;
-		$this->subaccount_code            = $this->get_option( 'subaccount_code' );
-		$this->charges_account            = $this->get_option( 'split_payment_charge_account' );
-		$this->transaction_charges        = $this->get_option( 'split_payment_transaction_charge' );
+		$this->split_payment              = $this->get_option('split_payment') === 'yes' ? true : false;
+		$this->remove_cancel_order_button = $this->get_option('remove_cancel_order_button') === 'yes' ? true : false;
+		$this->subaccount_code            = $this->get_option('subaccount_code');
+		$this->charges_account            = $this->get_option('split_payment_charge_account');
+		$this->transaction_charges        = $this->get_option('split_payment_transaction_charge');
 
-		$this->payment_icons = $this->get_option( 'payment_icons' );
+		$this->payment_icons = $this->get_option('payment_icons');
 
-		$this->custom_metadata = $this->get_option( 'custom_metadata' ) === 'yes' ? true : false;
+		$this->custom_metadata = $this->get_option('custom_metadata') === 'yes' ? true : false;
 
-		$this->meta_order_id         = $this->get_option( 'meta_order_id' ) === 'yes' ? true : false;
-		$this->meta_name             = $this->get_option( 'meta_name' ) === 'yes' ? true : false;
-		$this->meta_email            = $this->get_option( 'meta_email' ) === 'yes' ? true : false;
-		$this->meta_phone            = $this->get_option( 'meta_phone' ) === 'yes' ? true : false;
-		$this->meta_billing_address  = $this->get_option( 'meta_billing_address' ) === 'yes' ? true : false;
-		$this->meta_shipping_address = $this->get_option( 'meta_shipping_address' ) === 'yes' ? true : false;
-		$this->meta_products         = $this->get_option( 'meta_products' ) === 'yes' ? true : false;
+		$this->meta_order_id         = $this->get_option('meta_order_id') === 'yes' ? true : false;
+		$this->meta_name             = $this->get_option('meta_name') === 'yes' ? true : false;
+		$this->meta_email            = $this->get_option('meta_email') === 'yes' ? true : false;
+		$this->meta_phone            = $this->get_option('meta_phone') === 'yes' ? true : false;
+		$this->meta_billing_address  = $this->get_option('meta_billing_address') === 'yes' ? true : false;
+		$this->meta_shipping_address = $this->get_option('meta_shipping_address') === 'yes' ? true : false;
+		$this->meta_products         = $this->get_option('meta_products') === 'yes' ? true : false;
 
 		$this->public_key = $this->testmode ? $this->test_public_key : $this->live_public_key;
 		$this->secret_key = $this->testmode ? $this->test_secret_key : $this->live_secret_key;
@@ -120,26 +125,23 @@ class WC_Gateway_VitalSwap_Three extends WC_Gateway_Custom_VitalSwap {
 		// Load the settings.
 		$this->init_settings();
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'payment_scripts' ) );
+		add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
 
-		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array(
+		add_action('woocommerce_update_options_payment_gateways_' . $this->id, array(
 			$this,
 			'process_admin_options',
-		) );
+		));
 
-		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
+		add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
 
-		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'add_gateway_to_checkout' ) );
+		add_filter('woocommerce_available_payment_gateways', array($this, 'add_gateway_to_checkout'));
 
-		if ( class_exists( 'WC_Subscriptions_Order' ) ) {
+		if (class_exists('WC_Subscriptions_Order')) {
 
-			add_action( 'woocommerce_scheduled_subscription_payment_' . $this->id, array(
+			add_action('woocommerce_scheduled_subscription_payment_' . $this->id, array(
 				$this,
 				'scheduled_subscription_payment',
-			), 10, 2 );
-
+			), 10, 2);
 		}
-
 	}
-
 }

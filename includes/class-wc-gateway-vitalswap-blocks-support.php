@@ -11,7 +11,7 @@ final class WC_Gateway_VitalSwap_Blocks_Support extends AbstractPaymentMethodTyp
 	 *
 	 * @var string
 	 */
-	protected $name = 'woo-vitalswap';
+	protected $name = 'vitalswap';
 
 	/**
 	 * Initializes the payment method type.
@@ -30,7 +30,7 @@ final class WC_Gateway_VitalSwap_Blocks_Support extends AbstractPaymentMethodTyp
 	public function is_active() {
 		$payment_gateways_class = WC()->payment_gateways();
 		$payment_gateways       = $payment_gateways_class->payment_gateways();
-		return $payment_gateways['woo-vitalswap']->is_available();
+		return $payment_gateways['vitalswap']->is_available();
 	}
 
 	/**
@@ -58,7 +58,7 @@ final class WC_Gateway_VitalSwap_Blocks_Support extends AbstractPaymentMethodTyp
 		);
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'wc-VitalSwap-blocks', 'woo-VitalSwap', );
+			wp_set_script_translations( 'wc-VitalSwap-blocks', 'vitalswap', );
 		}
 
 		return array( 'wc-VitalSwap-blocks' );
@@ -72,14 +72,14 @@ final class WC_Gateway_VitalSwap_Blocks_Support extends AbstractPaymentMethodTyp
 	public function get_payment_method_data() {
 		$payment_gateways_class = WC()->payment_gateways();
 		$payment_gateways       = $payment_gateways_class->payment_gateways();
-		$gateway                = $payment_gateways['woo-vitalswap'];
+		$gateway                = $payment_gateways['vitalswap'];
 
 		return array(
 			'title'             => $this->get_setting( 'title' ),
 			'description'       => $this->get_setting( 'description' ),
 			'supports'          => array_filter( $gateway->supports, array( $gateway, 'supports' ) ),
 			'allow_saved_cards' => $gateway->saved_cards && is_user_logged_in(),
-			'logo_urls'         => array( $payment_gateways['woo-vitalswap']->get_logo_url() ),
+			'logo_urls'         => array( $payment_gateways['vitalswap']->get_logo_url() ),
 		);
 	}
 
