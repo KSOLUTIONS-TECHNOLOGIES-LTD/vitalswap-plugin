@@ -402,6 +402,8 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 	 * Display the selected payment icon.
 	 */
 	public function get_icon() {
+		
+		// phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 		$icon_html = '<img src="' . WC_HTTPS::force_https_url( WC_PAYSTACK_URL . '/assets/images/vitalswap.png' ) . '" alt="vitalswap" style="height: 40px; margin-right: 0.4em;margin-bottom: 0.6em;" />';
 		$icon      = $this->payment_icons;
 
@@ -410,6 +412,7 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 			$additional_icon = '';
 
 			foreach ( $icon as $i ) {
+				// phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
 				$additional_icon .= '<img src="' . WC_HTTPS::force_https_url( WC_PAYSTACK_URL . '/assets/images/' . $i . '.png' ) . '" alt="' . $i . '" style="height: 40px; margin-right: 0.4em;margin-bottom: 0.6em;" />';
 			}
 
@@ -424,6 +427,7 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 	 */
 	public function payment_scripts() {
 
+		// phpcs:ignore WordPress.Security.NonceVerification
 		if ( isset( $_GET['pay_for_order'] ) || ! is_checkout_pay_page() ) {
 			return;
 		}
@@ -432,7 +436,12 @@ class WC_Gateway_Custom_VitalSwap extends WC_Gateway_VitalSwap_Subscriptions {
 			return;
 		}
 
-		$order_key = urldecode( $_GET['key'] );
+		// phpcs:ignore WordPress.Security.NonceVerification
+		if(isset($_GET['key'])){
+			// phpcs:ignore WordPress.Security.NonceVerification
+			$order_key = urldecode( sanitize_text_field(wp_unslash($_GET['key'] )));
+		}
+		
 		$order_id  = absint( get_query_var( 'order-pay' ) );
 
 		$order = wc_get_order( $order_id );

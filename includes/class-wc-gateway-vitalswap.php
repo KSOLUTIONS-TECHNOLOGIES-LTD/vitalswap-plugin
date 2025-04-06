@@ -325,19 +325,8 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	public function get_icon()
 	{
 
-		$base_location = wc_get_base_location();
-
-		if ('GH' === $base_location['country']) {
-			$icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/VitalSwap-gh.png', WC_VitalSwap_MAIN_FILE)) . '" alt="VitalSwap Payment Options" />';
-		} elseif ('ZA' === $base_location['country']) {
-			$icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/VitalSwap-za.png', WC_VitalSwap_MAIN_FILE)) . '" alt="VitalSwap Payment Options" />';
-		} elseif ('KE' === $base_location['country']) {
-			$icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/VitalSwap-ke.png', WC_VitalSwap_MAIN_FILE)) . '" alt="VitalSwap Payment Options" />';
-		} elseif ('CI' === $base_location['country']) {
-			$icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/VitalSwap-civ.png', WC_VitalSwap_MAIN_FILE)) . '" alt="VitalSwap Payment Options" />';
-		} else {
-			$icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/VitalSwap-wc.png', WC_VitalSwap_MAIN_FILE)) . '" alt="VitalSwap Payment Options" />';
-		}
+		// phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
+		$icon = '<img src="' . WC_HTTPS::force_https_url(esc_url(plugins_url('assets/images/VitalSwap-wc.png', WC_VitalSwap_MAIN_FILE))) . '" alt="VitalSwap Payment Options" />';
 
 		return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
 	}
@@ -398,7 +387,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		</h2>
 
 
-		
+
 		<?php
 
 		if ($this->is_valid_for_use()) {
@@ -412,7 +401,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 				<p><strong><?php esc_html_e('VitalSwap Payment Gateway Disabled', 'vitalswap'); ?></strong></p>
 			</div>
 
-		<?php
+<?php
 		}
 	}
 
@@ -608,7 +597,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		}
 	}
 
-	
+
 
 
 	/**
@@ -617,6 +606,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	public function payment_scripts()
 	{
 
+		// phpcs:ignore WordPress.Security.NonceVerification
 		if (isset($_GET['pay_for_order']) || !is_checkout_pay_page()) {
 			return;
 		}
@@ -625,7 +615,12 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 			return;
 		}
 
-		$order_key = urldecode($_GET['key']);
+		// phpcs:ignore WordPress.Security.NonceVerification
+		if (isset($_GET['key'])) {
+			// phpcs:ignore WordPress.Security.NonceVerification
+			$order_key = urldecode(sanitize_text_field(wp_unslash($_GET['key'])));
+		}
+
 		$order_id  = absint(get_query_var('order-pay'));
 
 		$order = wc_get_order($order_id);
@@ -804,10 +799,10 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		$payment_token = 'wc-' . trim($this->id) . '-payment-token';
 
 		// phpcs:ignore WordPress.Security.NonceVerification
-		if (isset($_POST[$payment_token]) && 'new' !== wc_clean($_POST[$payment_token])) {
+		if (isset($_POST[$payment_token]) && 'new' !== wc_clean(sanitize_text_field(wp_unslash($_POST[$payment_token])))) {
 
 			// phpcs:ignore WordPress.Security.NonceVerification
-			$token_id = wc_clean($_POST[$payment_token]);
+			$token_id = wc_clean(sanitize_text_field(wp_unslash($_POST[$payment_token])));
 			$token    = \WC_Payment_Tokens::get($token_id);
 
 			if ($token->get_user_id() !== get_current_user_id()) {
@@ -947,7 +942,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 		);
 
 
-		$url = "https://vitalswap.com/test/api_v2/vapiex/session?user_identifier=$customer_email&transaction_type=checkout&transaction_amount=$amount&currency_iso=ngn&first_name=$order->get_billing_first_name()&last_name=$order->get_billing_last_name()&meta=$customer_email";
+		$url = $this->vitalswap_base_url."vapiex/session?user_identifier=$customer_email&transaction_type=checkout&transaction_amount=$amount&currency_iso=ngn&first_name=$order->get_billing_first_name()&last_name=$order->get_billing_last_name()&meta=$customer_email";
 
 		$request = wp_remote_get($url, $args);
 
@@ -967,9 +962,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 			);
 		} else {
-			echo '<pre>';
-			print_r($request);
-			echo '</pre>';
+
 
 			wc_add_notice(__('Unable to process payment try again', 'vitalswap'), 'error');
 
@@ -1142,7 +1135,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 					if (!empty($VitalSwap_response->message)) {
 
-					   /* translators: Payment decline reason */
+						/* translators: Payment decline reason */
 						$order_notice  = sprintf(__('Payment was declined by VitalSwap. Reason: %s.', 'vitalswap'), $VitalSwap_response->message);
 						/* translators: Payment decline reason */
 						$failed_notice = sprintf(__('Payment failed using the saved card. Reason: %s. Kindly use another payment option.', 'vitalswap'), $VitalSwap_response->message);
@@ -1205,12 +1198,18 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	public function verify_VitalSwap_transaction()
 	{
 
+		// phpcs:ignore WordPress.Security.NonceVerification
 		if (isset($_REQUEST['VitalSwap_txnref'])) {
-			$VitalSwap_txn_ref = sanitize_text_field($_REQUEST['VitalSwap_txnref']);
+			// phpcs:ignore WordPress.Security.NonceVerification
+			$VitalSwap_txn_ref = sanitize_text_field(wp_unslash($_REQUEST['VitalSwap_txnref']));
+			// phpcs:ignore WordPress.Security.NonceVerification
 		} elseif (isset($_REQUEST['reference'])) {
-			$VitalSwap_txn_ref = sanitize_text_field($_REQUEST['reference']);
+			// phpcs:ignore WordPress.Security.NonceVerification
+			$VitalSwap_txn_ref = sanitize_text_field(wp_unslash($_REQUEST['reference']));
+			// phpcs:ignore WordPress.Security.NonceVerification
 		} elseif (isset($_REQUEST['sid'])) {
-			$VitalSwap_txn_ref = sanitize_text_field($_REQUEST['sid']);
+			// phpcs:ignore WordPress.Security.NonceVerification
+			$VitalSwap_txn_ref = sanitize_text_field(wp_unslash($_REQUEST['sid']));
 		} else {
 			$VitalSwap_txn_ref = false;
 		}
@@ -1274,7 +1273,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 							$order->update_status('on-hold', '');
 
 							$order->update_meta_data('_transaction_id', $VitalSwap_ref);
-							
+
 							/* translators: Payment on-hold reason */
 							$notice      = sprintf(__('Thank you for shopping with us.%1$sYour payment was successful, but your order is currently on-hold.Kindly contact us for more information regarding your order and payment status.', 'vitalswap'), '<br />', '<br />', '<br />');
 							$notice_type = 'notice';
@@ -1309,8 +1308,8 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 					WC()->cart->empty_cart();
 				} else {
-
-					$order_details = explode('_', $_REQUEST['VitalSwap_txnref']);
+					// phpcs:ignore WordPress.Security.NonceVerification
+					$order_details = explode('_', sanitize_text_field(wp_unslash($_REQUEST['VitalSwap_txnref'])));
 
 					$order_id = (int) $order_details[0];
 
@@ -1335,10 +1334,13 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	 */
 	public function process_webhooks()
 	{
-
-		if (!array_key_exists('HTTP_X_VitalSwap_SIGNATURE', $_SERVER) || (strtoupper($_SERVER['REQUEST_METHOD']) !== 'POST')) {
-			exit;
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if (!array_key_exists('HTTP_X_VitalSwap_SIGNATURE', $_SERVER) || (strtoupper(sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD']))) !== 'POST')) {
+				exit;
+			}
 		}
+
+
 
 		$json = file_get_contents('php://input');
 
@@ -1448,7 +1450,7 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 
 				$order->payment_complete($VitalSwap_ref);
 
-			  /* translators: Payment reference */	
+				/* translators: Payment reference */
 				$order->add_order_note(sprintf(__('Payment via VitalSwap successful (Transaction Reference: %s)', 'vitalswap'), $VitalSwap_ref));
 
 				WC()->cart->empty_cart();
@@ -1731,8 +1733,8 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 					if ($refund_response->status) {
 						$amount         = wc_price($amount, array('currency' => $order_currency));
 						$refund_id      = $refund_response->data->id;
-					
-						/* translators: 1: Refund amount, 2: Refund ID, 3: Refund Reason */	
+
+						/* translators: 1: Refund amount, 2: Refund ID, 3: Refund Reason */
 						$refund_message = sprintf(__('Refunded %1$s. Refund ID: %2$s. Reason: %3$s', 'vitalswap'), $amount, $refund_id, $reason);
 						$order->add_order_note($refund_message);
 
@@ -1881,7 +1883,11 @@ class WC_Gateway_VitalSwap extends WC_Payment_Gateway_CC
 	{
 		$protocol = isset($_SERVER['HTTPS']) &&
 			$_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-		$base_url = $protocol . $_SERVER['HTTP_HOST'] . '/';
+
+			if(isset($_SERVER['HTTP_HOST'])){
+				$base_url = $protocol . sanitize_text_field(wp_unslash($_SERVER['HTTP_HOST'])) . '/';
+
+			}
 
 		return $base_url;
 	}
