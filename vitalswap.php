@@ -36,80 +36,24 @@ define('WC_VitalSwap_VERSION', '2.0');
 function wc_VitalSwap_init()
 {
 
-	load_plugin_textdomain('vitalswap', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
 	if (!class_exists('WC_Payment_Gateway')) {
-		add_action('admin_notices', 'tbz_WC_VitalSwap_wc_missing_notice');
+		add_action('admin_notices', 'vitalswap_WC_VitalSwap_wc_missing_notice');
 		return;
 	}
 
-	add_action('admin_init', 'tbz_WC_VitalSwap_testmode_notice');
+	add_action('admin_init', 'vitalswap_WC_VitalSwap_testmode_notice');
 
 	require_once __DIR__ . '/includes/class-wc-gateway-vitalswap.php';
 
-	require_once __DIR__ . '/includes/class-wc-gateway-vitalswap-subscriptions.php';
 
-	require_once __DIR__ . '/includes/custom-gateways/class-wc-gateway-custom-vitalswap.php';
+	add_filter('woocommerce_payment_gateways', 'vitalswap_wc_add_VitalSwap_gateway', 99);
 
-	require_once __DIR__ . '/includes/custom-gateways/gateway-one/class-wc-gateway-vitalswap-one.php';
-	require_once __DIR__ . '/includes/custom-gateways/gateway-two/class-wc-gateway-vitalswap-two.php';
-	require_once __DIR__ . '/includes/custom-gateways/gateway-three/class-wc-gateway-vitalswap-three.php';
-	require_once __DIR__ . '/includes/custom-gateways/gateway-four/class-wc-gateway-vitalswap-four.php';
-	require_once __DIR__ . '/includes/custom-gateways/gateway-five/class-wc-gateway-vitalswap-five.php';
-
-	require_once __DIR__ . '/page/PageInterface.php';
-	require_once __DIR__ . '/page/ControllerInterface.php';
-	require_once __DIR__ . '/page/TemplateLoaderInterface.php';
-	require_once __DIR__ . '/page/Page.php';
-	require_once __DIR__ . '/page/Controller.php';
-	require_once __DIR__ . '/page/TemplateLoader.php';
-
-	$controller = new Controller(new TemplateLoader);
-
-	add_action('init', array($controller, 'init'));
-
-	add_filter('do_parse_request', array($controller, 'dispatch'), PHP_INT_MAX, 2);
-
-	add_action('loop_end', function (\WP_Query $query) {
-		if (isset($query->virtual_page) && !empty($query->virtual_page)) {
-			$query->virtual_page = NULL;
-		}
-	});
-
-	add_filter('the_permalink', function ($plink) {
-		global $post, $wp_query;
-		if (
-			$wp_query->is_page && isset($wp_query->virtual_page)
-			&& $wp_query->virtual_page instanceof Page
-			&& isset($post->is_virtual) && $post->is_virtual
-		) {
-			$plink = home_url($wp_query->virtual_page->getUrl());
-		}
-		return $plink;
-	});
-
-
-	add_filter('woocommerce_payment_gateways', 'tbz_wc_add_VitalSwap_gateway', 99);
-
-	add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'tbz_woo_VitalSwap_plugin_action_links');
+	add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'vitalswap_woo_VitalSwap_plugin_action_links');
 }
 add_action('plugins_loaded', 'wc_VitalSwap_init', 99);
 
-add_action('gm_virtual_pages', function ($controller) {
 
-
-	//plugin_dir_path( __FILE__ )  . 'templates/checkout.php'
-	// first page
-	$controller->addPage(new Page('/vitalswap/checkout'))
-		->setTitle('VitalSwap Checkout Page ')
-		->setTemplate('checkout.php');
-
-
-	// second page
-	$controller->addPage(new Page('/vitalswap/thank-you'))
-		->setTitle('My Second Custom Page')
-		->setTemplate('templates/thank-you.php');
-});
 
 /**
  * Add Settings link to the plugin entry in the plugins menu.
@@ -118,7 +62,7 @@ add_action('gm_virtual_pages', function ($controller) {
  *
  * @return array
  **/
-function tbz_woo_VitalSwap_plugin_action_links($links)
+function vitalswap_woo_VitalSwap_plugin_action_links($links)
 {
 
 	$settings_link = array(
@@ -135,7 +79,7 @@ function tbz_woo_VitalSwap_plugin_action_links($links)
  *
  * @return array
  */
-function tbz_wc_add_VitalSwap_gateway($methods)
+function vitalswap_wc_add_VitalSwap_gateway($methods)
 {
 
 	if (class_exists('WC_Subscriptions_Order') && class_exists('WC_Payment_Gateway_CC')) {
@@ -191,7 +135,7 @@ function tbz_wc_add_VitalSwap_gateway($methods)
 /**
  * Display a notice if WooCommerce is not installed
  */
-function tbz_WC_VitalSwap_wc_missing_notice()
+function vitalswap_WC_VitalSwap_wc_missing_notice()
 {
 	/* translators: WooCommerce installation link  */
 	echo esc_html('<div class="error"><p><strong>' . sprintf(__('VitalSwap requires WooCommerce to be installed and active. Click %s to install WooCommerce.', 'vitalswap'), '<a href="' . admin_url('plugin-install.php?tab=plugin-information&plugin=woocommerce&TB_iframe=true&width=772&height=539') . '" class="thickbox open-plugin-details-modal">here</a>') . '</strong></p></div>');
@@ -200,7 +144,7 @@ function tbz_WC_VitalSwap_wc_missing_notice()
 /**
  * Display the test mode notice.
  **/
-function tbz_WC_VitalSwap_testmode_notice()
+function vitalswap_WC_VitalSwap_testmode_notice()
 {
 
 	if (!class_exists(Notes::class)) {
@@ -251,33 +195,7 @@ add_action(
 	}
 );
 
-/**
- * Registers WooCommerce Blocks integration.
- */
-function tbz_wc_gateway_VitalSwap_woocommerce_block_support()
-{
-	if (class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) {
-		require_once __DIR__ . '/includes/class-wc-gateway-vitalswap-blocks-support.php';
-		require_once __DIR__ . '/includes/custom-gateways/class-wc-gateway-custom-vitalswap-blocks-support.php';
-		require_once __DIR__ . '/includes/custom-gateways/gateway-one/class-wc-gateway-vitalswap-one-blocks-support.php';
-		require_once __DIR__ . '/includes/custom-gateways/gateway-two/class-wc-gateway-vitalswap-two-blocks-support.php';
-		require_once __DIR__ . '/includes/custom-gateways/gateway-three/class-wc-gateway-vitalswap-three-blocks-support.php';
-		require_once __DIR__ . '/includes/custom-gateways/gateway-four/class-wc-gateway-vitalswap-four-blocks-support.php';
-		require_once __DIR__ . '/includes/custom-gateways/gateway-five/class-wc-gateway-vitalswap-five-blocks-support.php';
-		add_action(
-			'woocommerce_blocks_payment_method_type_registration',
-			static function (Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry) {
-				$payment_method_registry->register(new WC_Gateway_VitalSwap_Blocks_Support());
-				$payment_method_registry->register(new WC_Gateway_VitalSwap_One_Blocks_Support());
-				$payment_method_registry->register(new WC_Gateway_VitalSwap_Two_Blocks_Support());
-				$payment_method_registry->register(new WC_Gateway_VitalSwap_Three_Blocks_Support());
-				$payment_method_registry->register(new WC_Gateway_VitalSwap_Four_Blocks_Support());
-				$payment_method_registry->register(new WC_Gateway_VitalSwap_Five_Blocks_Support());
-			}
-		);
-	}
-}
-add_action('woocommerce_blocks_loaded', 'tbz_wc_gateway_VitalSwap_woocommerce_block_support');
+
 
 
 function vitalswap_template_array()
